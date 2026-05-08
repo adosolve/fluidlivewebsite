@@ -148,20 +148,20 @@ function HeroSection() {
         </motion.p>
         
         <motion.div 
-          className="flex flex-col sm:flex-row gap-6 justify-center"
+          className="flex flex-row gap-3 sm:gap-6 justify-center"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
           <Link 
             to="/services" 
-            className="btn-primary text-lg"
+            className="btn-primary text-sm sm:text-lg px-4 py-3 sm:px-8 sm:py-4"
           >
             Explore Our Work
           </Link>
           <Link 
             to="/contact" 
-            className="btn-secondary text-lg"
+            className="btn-secondary text-sm sm:text-lg px-4 py-3 sm:px-8 sm:py-4"
           >
             Book a Call
           </Link>
