@@ -1,8 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import CustomCursor from './components/CustomCursor'
-import Chatbot from './components/Chatbot'
 import Home from './pages/Home'
 import About from './pages/About'
 import Services from './pages/Services'
@@ -14,7 +12,6 @@ import Careers from './pages/Careers'
 function App() {
   return (
     <div className="min-h-screen flex flex-col">
-      <CustomCursor />
       <Navbar />
       <main className="flex-grow">
         <Routes>
@@ -28,7 +25,6 @@ function App() {
         </Routes>
       </main>
       <Footer />
-      <Chatbot />
     </div>
   )
 }

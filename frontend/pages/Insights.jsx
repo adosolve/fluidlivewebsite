@@ -84,7 +84,7 @@ export default function Insights() {
             ))}
           </div>
 
-          <div className="text-center mt-16 p-12 bg-blue-50 rounded-2xl">
+          <div className="text-center mt-16 p-12 bg-blue-50 rounded-2xl border border-gray-200">
             <h2 className="text-3xl font-medium mb-4 text-gray-900" style={{letterSpacing: '-0.02em'}}>Want to stay updated?</h2>
             <p className="text-gray-600 mb-6 leading-relaxed">
               Subscribe to our newsletter for the latest insights on AI and business transformation.

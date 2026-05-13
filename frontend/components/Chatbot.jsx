@@ -93,9 +93,7 @@ Our Services:
 2. AI-Powered Products - Design and build bespoke AI agents, chatbots, and automation tools
 3. AI-Enhanced Creative - Brand identity, visual design, and content crafted by humans, accelerated by AI
 4. AI for Marketing & Sales - AI-powered campaigns, lead generation, and sales automation
-5. AI Data & Analytics - Market research, business intelligence, and predictive analytics
-6. AI Training & Enablement - Workshops and programs that turn AI curiosity into competitive advantage
-7. Custom AI Solutions - End-to-end development of bespoke AI systems
+5. Custom AI Solutions - End-to-end development of bespoke AI systems
 
 Our Process: Discover → Design → Build → Deploy → Evolve
 
@@ -184,7 +182,7 @@ Your role is to help visitors understand our business, answer questions about ou
     const lowerMessage = message.toLowerCase()
     
     if (lowerMessage.includes('service') || lowerMessage.includes('what do you do')) {
-      return 'We offer 7 core AI services: AI Strategy & Consulting, AI-Powered Products, AI-Enhanced Creative, AI for Marketing & Sales, AI Data & Analytics, AI Training & Enablement, and Custom AI Solutions. Which area interests you most?'
+      return 'We offer 5 core AI services: AI Strategy & Consulting, AI-Powered Products, AI-Enhanced Creative, AI for Marketing & Sales, and Custom AI Solutions. Which area interests you most?'
     }
     
     if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('pricing')) {
@@ -239,7 +237,7 @@ Your role is to help visitors understand our business, answer questions about ou
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300"></div>
             
             {/* Main button */}
-            <div className="relative bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600 text-white rounded-full p-4 shadow-2xl">
+            <div className="relative bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600 text-white rounded-full p-4">
               <Bot className="w-7 h-7" strokeWidth={2} />
               
               {/* Sparkle effect */}
@@ -259,7 +257,7 @@ Your role is to help visitors understand our business, answer questions about ou
               </motion.div>
               
               {/* Online indicator */}
-              <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-400 rounded-full border-2 border-white shadow-lg"></span>
+              <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></span>
             </div>
           </motion.button>
         )}
@@ -273,7 +271,7 @@ Your role is to help visitors understand our business, answer questions about ou
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 100, scale: 0.9 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-0 sm:bottom-6 sm:right-6 sm:inset-auto z-50 w-full sm:w-[400px] md:w-[440px] h-full sm:h-[650px] bg-white sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border-0 sm:border sm:border-gray-100"
+            className="fixed inset-0 sm:bottom-6 sm:right-6 sm:inset-auto z-50 w-full sm:w-[400px] md:w-[440px] h-full sm:h-[650px] bg-white sm:rounded-3xl flex flex-col overflow-hidden border-0 sm:border sm:border-gray-100"
           >
             {/* Chat Header - Modern AI Design */}
             <div className="relative bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600 text-white p-5 flex items-center justify-between overflow-hidden">
@@ -288,7 +286,7 @@ Your role is to help visitors understand our business, answer questions about ou
               <div className="relative flex items-center space-x-3">
                 {/* AI Bot Avatar */}
                 <div className="relative">
-                  <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30 shadow-lg">
+                  <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30">
                     <Bot className="w-6 h-6 text-white" strokeWidth={2.5} />
                   </div>
                   {/* Pulse animation */}
@@ -331,12 +329,12 @@ Your role is to help visitors understand our business, answer questions about ou
                   className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   {message.role === 'assistant' && (
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-500 rounded-xl flex items-center justify-center mr-2 flex-shrink-0 shadow-md">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-500 rounded-xl flex items-center justify-center mr-2 flex-shrink-0">
                       <Bot className="w-4 h-4 text-white" strokeWidth={2.5} />
                     </div>
                   )}
                   <div
-                    className={`max-w-[75%] rounded-2xl px-4 py-3 shadow-sm ${
+                    className={`max-w-[75%] rounded-2xl px-4 py-3 ${
                       message.role === 'user'
                         ? 'bg-gradient-to-br from-blue-600 to-blue-500 text-white rounded-br-md'
                         : 'bg-white text-gray-800 rounded-bl-md border border-gray-100'
@@ -353,10 +351,10 @@ Your role is to help visitors understand our business, answer questions about ou
                   animate={{ opacity: 1 }}
                   className="flex justify-start"
                 >
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-500 rounded-xl flex items-center justify-center mr-2 flex-shrink-0 shadow-md">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-500 rounded-xl flex items-center justify-center mr-2 flex-shrink-0">
                     <Bot className="w-4 h-4 text-white" strokeWidth={2.5} />
                   </div>
-                  <div className="bg-white rounded-2xl rounded-bl-md px-4 py-3 shadow-sm border border-gray-100">
+                  <div className="bg-white rounded-2xl rounded-bl-md px-4 py-3 border border-gray-100">
                     <div className="flex space-x-2">
                       <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
                       <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
@@ -422,7 +420,7 @@ Your role is to help visitors understand our business, answer questions about ou
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputMessage.trim() || isLoading || isRateLimited}
-                  className="bg-gradient-to-r from-blue-600 to-blue-500 text-white p-3 rounded-2xl hover:from-blue-700 hover:to-blue-600 disabled:from-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed transition-all duration-200 flex-shrink-0 shadow-lg hover:shadow-xl disabled:shadow-none"
+                  className="bg-gradient-to-r from-blue-600 to-blue-500 text-white p-3 rounded-2xl hover:from-blue-700 hover:to-blue-600 disabled:from-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed transition-all duration-200 flex-shrink-0 disabled:shadow-none"
                   aria-label="Send message"
                 >
                   <Send className="w-5 h-5" strokeWidth={2.5} />

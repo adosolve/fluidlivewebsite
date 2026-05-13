@@ -95,7 +95,7 @@ export default function Careers() {
             </div>
           </div>
 
-          <div className="text-center p-12 bg-blue-50 rounded-2xl">
+          <div className="text-center p-12 bg-blue-50 rounded-2xl border border-gray-200">
             <h2 className="text-3xl font-medium mb-4 text-gray-900" style={{letterSpacing: '-0.02em'}}>Don't see the right role?</h2>
             <p className="text-gray-600 mb-6 leading-relaxed">
               We're always looking for exceptional talent. Send us your resume and let's talk.

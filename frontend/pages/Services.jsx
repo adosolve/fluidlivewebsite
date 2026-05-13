@@ -51,30 +51,6 @@ export default function Services() {
       ]
     },
     {
-      id: 'ai-analytics',
-      icon: '📊',
-      title: 'AI Data & Analytics',
-      description: 'Market research, business intelligence, and predictive analytics — powered by AI and built for action.',
-      features: [
-        'Predictive Analytics',
-        'Business Intelligence',
-        'Market Research',
-        'Data Visualization'
-      ]
-    },
-    {
-      id: 'ai-training',
-      icon: '🎓',
-      title: 'AI Training & Enablement',
-      description: 'Hands-on workshops and enablement programs that turn AI curiosity into daily competitive advantage.',
-      features: [
-        'Executive Workshops',
-        'Team Training',
-        'Best Practices',
-        'Ongoing Support'
-      ]
-    },
-    {
       id: 'custom-solutions',
       icon: '🔧',
       title: 'Custom AI Solutions',

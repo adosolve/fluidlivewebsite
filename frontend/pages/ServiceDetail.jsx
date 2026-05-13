@@ -76,42 +76,6 @@ export default function ServiceDetail() {
         { step: 'Optimization', description: 'Continuously improve performance' }
       ]
     },
-    'ai-analytics': {
-      icon: '📊',
-      title: 'AI Data & Analytics',
-      tagline: 'Turn data into actionable intelligence',
-      description: 'Unlock the power of your data with AI-driven analytics. We help you make sense of complex datasets, predict future trends, and make data-driven decisions with confidence.',
-      benefits: [
-        'Predictive insights for better planning',
-        'Real-time business intelligence',
-        'Automated reporting and dashboards',
-        'Actionable recommendations'
-      ],
-      process: [
-        { step: 'Data Audit', description: 'Assess data quality and availability' },
-        { step: 'Architecture', description: 'Design analytics infrastructure' },
-        { step: 'Modeling', description: 'Build predictive models and dashboards' },
-        { step: 'Activation', description: 'Integrate insights into workflows' }
-      ]
-    },
-    'ai-training': {
-      icon: '🎓',
-      title: 'AI Training & Enablement',
-      tagline: 'Empower your team with AI skills',
-      description: 'Build internal AI capabilities with our comprehensive training programs. From executive workshops to hands-on technical training, we help your team confidently adopt and leverage AI.',
-      benefits: [
-        'Increased AI literacy across organization',
-        'Faster adoption of AI tools and practices',
-        'Reduced dependency on external consultants',
-        'Culture of innovation and experimentation'
-      ],
-      process: [
-        { step: 'Assessment', description: 'Evaluate current skill levels and needs' },
-        { step: 'Curriculum', description: 'Design customized training program' },
-        { step: 'Delivery', description: 'Conduct workshops and hands-on sessions' },
-        { step: 'Support', description: 'Provide ongoing coaching and resources' }
-      ]
-    },
     'custom-solutions': {
       icon: '🔧',
       title: 'Custom AI Solutions',
@@ -156,7 +120,7 @@ export default function ServiceDetail() {
             <h2 className="text-3xl font-bold mb-6">Key Benefits</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {service.benefits.map((benefit, index) => (
-                <div key={index} className="flex items-start p-4 bg-gray-900/50 border border-gray-800 rounded-lg">
+                <div key={index} className="flex items-start p-4 bg-gray-900/50 border border-gray-700 rounded-lg">
                   <svg className="w-6 h-6 text-purple-400 mr-3 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
@@ -170,7 +134,7 @@ export default function ServiceDetail() {
             <h2 className="text-3xl font-bold mb-6">Our Process</h2>
             <div className="space-y-4">
               {service.process.map((item, index) => (
-                <div key={index} className="flex items-start p-6 bg-gray-900/50 border border-gray-800 rounded-lg">
+                <div key={index} className="flex items-start p-6 bg-gray-900/50 border border-gray-700 rounded-lg">
                   <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
                     {index + 1}
                   </div>

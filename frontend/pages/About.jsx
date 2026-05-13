@@ -61,7 +61,7 @@ export default function About() {
             </div>
           </div>
 
-          <div className="text-center p-12 bg-blue-50 rounded-2xl">
+          <div className="text-center p-12 bg-blue-50 rounded-2xl border border-gray-200">
             <h2 className="text-3xl font-medium mb-4 text-gray-900" style={{letterSpacing: '-0.02em'}}>Ready to work together?</h2>
             <p className="text-gray-600 mb-6 leading-relaxed">
               Let's explore how we can help transform your business with AI.

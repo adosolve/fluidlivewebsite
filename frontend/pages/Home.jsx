@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Brain, Settings, Palette, TrendingUp, BarChart3, GraduationCap, Wrench, Zap, Sparkles, Waves } from 'lucide-react'
 
@@ -173,8 +173,8 @@ function HeroSection() {
 
 function PrincipleSection() {
   return (
-    <section className="section-spacing bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <section className="section-spacing bg-gray-50 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <span className="overline">OUR GUIDING PRINCIPLE</span>
         <h2 className="text-5xl md:text-6xl font-medium mt-6 mb-8" style={{letterSpacing: '-0.02em'}}>
           Fluid Behaviour and Co-Creation
@@ -229,18 +229,6 @@ function ServicesSection() {
       description: 'AI-powered campaigns, lead generation, and sales automation that target the right person at the right moment.'
     },
     {
-      id: 'ai-analytics',
-      icon: BarChart3,
-      title: 'AI Data & Analytics',
-      description: 'Market research, business intelligence, and predictive analytics — powered by AI and built for action.'
-    },
-    {
-      id: 'ai-training',
-      icon: GraduationCap,
-      title: 'AI Training & Enablement',
-      description: 'Hands-on workshops and enablement programs that turn AI curiosity into daily competitive advantage.'
-    },
-    {
       id: 'custom-solutions',
       icon: Wrench,
       title: 'Custom AI Solutions',
@@ -249,8 +237,11 @@ function ServicesSection() {
   ]
 
   return (
-    <section className="section-spacing">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="section-spacing relative bg-white">
+      {/* Grid Background */}
+      <div className="absolute inset-0 bg-grid opacity-50 pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-20">
           <span className="overline">WHAT WE DO</span>
           <h2 className="text-5xl md:text-6xl font-medium mt-6" style={{letterSpacing: '-0.02em'}}>
@@ -259,13 +250,14 @@ function ServicesSection() {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service) => {
+          {services.map((service, index) => {
             const IconComponent = service.icon
+            const bgColor = index % 2 === 0 ? 'bg-blue-50' : 'bg-gray-50'
             return (
               <Link 
                 key={service.id}
                 to={`/services/${service.id}`}
-                className="group p-8 card card-hover"
+                className={`group p-8 card card-hover ${bgColor}`}
               >
                 <IconComponent className="w-12 h-12 mb-6 text-blue-600" strokeWidth={1.5} />
                 <h3 className="text-xl font-medium mb-4 transition-colors duration-300 text-gray-900">
@@ -278,15 +270,23 @@ function ServicesSection() {
               </Link>
             )
           })}
-        </div>
-        
-        <div className="text-center mt-16">
-          <Link 
-            to="/contact" 
-            className="btn-primary text-lg"
-          >
-            → Start a Project
-          </Link>
+          
+          {/* CTA Container */}
+          <div className="group p-8 card flex flex-col items-start justify-start text-left min-h-[300px] bg-gray-900">
+            <Zap className="w-12 h-12 mb-6 text-blue-400" strokeWidth={1.5} />
+            <h3 className="text-xl font-medium mb-4 text-white">
+              Ready to Transform?
+            </h3>
+            <p className="text-gray-300 mb-8 leading-relaxed flex-grow">
+              Let's discuss how AI can drive real impact for your business.
+            </p>
+            <Link 
+              to="/contact" 
+              className="btn-primary text-base"
+            >
+              Start a Project
+            </Link>
+          </div>
         </div>
       </div>
     </section>
@@ -328,8 +328,48 @@ function ProcessSection() {
 
 function StatsSection() {
   const [counts, setCounts] = useState({ projects: 0, industries: 0, retention: 0 })
+  const [hasStarted, setHasStarted] = useState(false)
+  const sectionRef = useRef(null)
+
+  const testimonials = [
+    {
+      quote: "Fluid.Live didn't just deliver a product — they became a true partner in our AI transformation.",
+      author: "CEO, FINTECH SCALE-UP"
+    },
+    {
+      quote: "The blend of creative thinking and technical depth is unlike any agency we've worked with.",
+      author: "CMO, GLOBAL MEDIA GROUP"
+    },
+    {
+      quote: "From strategy to execution, the team was with us every step. Truly fluid collaboration.",
+      author: "CTO, EDTECH PLATFORM"
+    }
+  ]
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasStarted) {
+          setHasStarted(true)
+        }
+      },
+      { threshold: 0.3 }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current)
+      }
+    }
+  }, [hasStarted])
+
+  useEffect(() => {
+    if (!hasStarted) return
+
     const duration = 2000
     const steps = 60
     const projectTarget = 150
@@ -351,16 +391,17 @@ function StatsSection() {
     }, duration / steps)
 
     return () => clearInterval(interval)
-  }, [])
+  }, [hasStarted])
 
   return (
-    <section className="section-spacing">
+    <section className="section-spacing" ref={sectionRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-20">
           <span className="overline">TRUSTED PARTNER FOR LIFE</span>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-center">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-center mb-20">
           <div>
             <div className="text-7xl font-medium gradient-text mb-4">{counts.projects}+</div>
             <div className="text-lg text-gray-600" style={{letterSpacing: '0.05em'}}>AI PROJECTS DELIVERED</div>
@@ -374,33 +415,11 @@ function StatsSection() {
             <div className="text-lg text-gray-600" style={{letterSpacing: '0.05em'}}>CLIENT RETENTION</div>
           </div>
         </div>
-      </div>
-    </section>
-  )
-}
 
-function TestimonialsSection() {
-  const testimonials = [
-    {
-      quote: "Fluid.Live didn't just deliver a product — they became a true partner in our AI transformation.",
-      author: "CEO, FINTECH SCALE-UP"
-    },
-    {
-      quote: "The blend of creative thinking and technical depth is unlike any agency we've worked with.",
-      author: "CMO, GLOBAL MEDIA GROUP"
-    },
-    {
-      quote: "From strategy to execution, the team was with us every step. Truly fluid collaboration.",
-      author: "CTO, EDTECH PLATFORM"
-    }
-  ]
-
-  return (
-    <section className="section-spacing bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Testimonials Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="p-10 card">
+            <div key={index} className="p-10 card border border-gray-200">
               <div className="text-5xl mb-6" style={{color: '#4F8CFF'}}>"</div>
               <p className="text-lg text-gray-900 mb-8 leading-relaxed">{testimonial.quote}</p>
               <p className="text-sm text-gray-500 font-medium" style={{letterSpacing: '0.05em'}}>{testimonial.author}</p>
@@ -410,6 +429,10 @@ function TestimonialsSection() {
       </div>
     </section>
   )
+}
+
+function TestimonialsSection() {
+  return null
 }
 
 function InsightsSection() {
@@ -425,11 +448,17 @@ function InsightsSection() {
       title: 'Co-Creation in the Age of Agentic AI',
       description: 'Agentic AI changes the relationship between humans and technology. Here\'s what it means for how we build together.',
       date: '2026-03-15'
+    },
+    {
+      category: 'AI INNOVATION',
+      title: 'From Concept to Impact: Building AI Products That Matter',
+      description: 'Learn how we approach AI product development with a focus on real-world impact and user-centric design.',
+      date: '2026-02-28'
     }
   ]
 
   return (
-    <section className="section-spacing">
+    <section className="section-spacing bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
           <span className="overline">LATEST INSIGHTS</span>
@@ -438,12 +467,12 @@ function InsightsSection() {
           </h2>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {insights.map((insight, index) => (
             <Link 
               key={index}
               to="/insights"
-              className="group p-10 card card-hover"
+              className={`group p-10 card card-hover ${index % 2 === 0 ? 'bg-blue-50' : 'bg-white'}`}
             >
               <span className="overline" style={{color: '#4F8CFF'}}>{insight.category}</span>
               <h3 className="text-3xl font-medium mt-4 mb-4 transition-colors duration-300 text-gray-900" style={{letterSpacing: '-0.02em'}}>
@@ -470,17 +499,17 @@ function InsightsSection() {
 
 function CTASection() {
   return (
-    <section className="section-spacing bg-gradient-to-b from-blue-50 to-white">
+    <section className="section-spacing bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-5xl md:text-6xl font-medium mb-8" style={{letterSpacing: '-0.02em'}}>
+        <h2 className="text-5xl md:text-6xl font-medium mb-8 text-white" style={{letterSpacing: '-0.02em'}}>
           Ready to start the journey?
         </h2>
-        <p className="text-xl text-gray-600 mb-12 leading-relaxed">
+        <p className="text-xl text-blue-100 mb-12 leading-relaxed">
           Let's co-create something extraordinary.
         </p>
         <Link 
           to="/contact" 
-          className="btn-primary text-lg"
+          className="px-8 py-4 text-blue-600 font-medium rounded-full transition-all duration-300 bg-white hover:bg-gray-100 text-lg"
         >
           Contact Our Team
         </Link>
