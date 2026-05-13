@@ -153,12 +153,12 @@ function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <Link 
-            to="/services" 
+          <a 
+            href="/#services" 
             className="btn-primary text-sm sm:text-lg px-4 py-3 sm:px-8 sm:py-4"
           >
             Explore Our Work
-          </Link>
+          </a>
           <Link 
             to="/contact" 
             className="btn-secondary text-sm sm:text-lg px-4 py-3 sm:px-8 sm:py-4"
@@ -237,7 +237,7 @@ function ServicesSection() {
   ]
 
   return (
-    <section className="section-spacing relative bg-white">
+    <section id="services" className="section-spacing relative bg-white">
       {/* Grid Background */}
       <div className="absolute inset-0 bg-grid opacity-50 pointer-events-none" />
       
@@ -254,9 +254,8 @@ function ServicesSection() {
             const IconComponent = service.icon
             const bgColor = index % 2 === 0 ? 'bg-blue-50' : 'bg-gray-50'
             return (
-              <Link 
+              <div 
                 key={service.id}
-                to={`/services/${service.id}`}
                 className={`group p-8 card card-hover ${bgColor}`}
               >
                 <IconComponent className="w-12 h-12 mb-6 text-blue-600" strokeWidth={1.5} />
@@ -264,10 +263,7 @@ function ServicesSection() {
                   {service.title}
                 </h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
-                <span className="font-medium transition-colors duration-300" style={{color: '#4F8CFF'}}>
-                  Learn More →
-                </span>
-              </Link>
+              </div>
             )
           })}
           

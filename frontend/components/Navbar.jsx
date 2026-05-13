@@ -39,8 +39,7 @@ export default function Navbar() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-10">
-              <Link to="/" className="text-gray-600 hover:text-gray-900 transition-colors duration-300">Home</Link>
-              <Link to="/services" className="text-gray-600 hover:text-gray-900 transition-colors duration-300">Services</Link>
+              <a href="/#services" className="text-gray-600 hover:text-gray-900 transition-colors duration-300">Services</a>
               <Link to="/about" className="text-gray-600 hover:text-gray-900 transition-colors duration-300">About</Link>
               <Link to="/insights" className="text-gray-600 hover:text-gray-900 transition-colors duration-300">Insights</Link>
               <Link to="/careers" className="text-gray-600 hover:text-gray-900 transition-colors duration-300">Careers</Link>
@@ -88,14 +87,14 @@ export default function Navbar() {
             >
               Home
             </Link>
-            <Link 
-              to="/services" 
+            <a 
+              href="/#services" 
               onClick={() => setIsOpen(false)} 
               className="text-2xl font-medium text-gray-900 hover:text-blue-600 transition-colors duration-200 py-4 border-b border-gray-100"
               style={{letterSpacing: '-0.01em'}}
             >
               Services
-            </Link>
+            </a>
             <Link 
               to="/about" 
               onClick={() => setIsOpen(false)} 

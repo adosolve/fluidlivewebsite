@@ -101,10 +101,10 @@ export default function Footer() {
             <ul className="space-y-2 sm:space-y-3 text-gray-300">
               <li>
                 <a 
-                  href="mailto:hr@fluid.live" 
+                  href="mailto:hrteam@fluid.live" 
                   className="hover:text-white transition-colors duration-300 text-sm sm:text-base break-all"
                 >
-                  hr@fluid.live
+                  hrteam@fluid.live
                 </a>
               </li>
               <li>

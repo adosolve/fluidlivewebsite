@@ -126,8 +126,8 @@ export default function Contact() {
                     </svg>
                     <div>
                       <p className="font-medium text-gray-900">Email</p>
-                      <a href="mailto:hr@fluid.live" className="transition-colors duration-300" style={{color: '#4F8CFF'}}>
-                        hr@fluid.live
+                      <a href="mailto:hrteam@fluid.live" className="transition-colors duration-300" style={{color: '#4F8CFF'}}>
+                        hrteam@fluid.live
                       </a>
                     </div>
                   </div>
@@ -139,7 +139,7 @@ export default function Contact() {
                     </svg>
                     <div>
                       <p className="font-medium text-gray-900">Location</p>
-                      <p className="text-gray-600">Global • Remote-First</p>
+                      <p className="text-gray-600">Bungalow #2, Lane O, 81/1, N Main Rd, behind One Restaurant and Bar, Koregaon Park Annexe, Pune, Maharashtra 411036</p>
                     </div>
                   </div>
                 </div>
@@ -200,6 +200,31 @@ export default function Contact() {
                   </a>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Where We Are Section */}
+          <div className="mt-20 pt-20 border-t border-gray-200">
+            <div className="text-center mb-12">
+              <span className="overline">WHERE WE ARE</span>
+              <h2 className="text-4xl md:text-5xl font-medium mt-6 mb-4 text-gray-900" style={{letterSpacing: '-0.02em'}}>
+                Pune, India
+              </h2>
+              <p className="text-lg text-gray-600 mb-2">📍 Bungalow #2, Lane O, 81/1, N Main Rd, behind One Restaurant and Bar, Koregaon Park Annexe, Pune, Maharashtra 411036</p>
+              <p className="text-lg text-gray-600">Working with clients globally, rooted in Pune.</p>
+            </div>
+
+            {/* Map Container */}
+            <div className="rounded-2xl overflow-hidden border border-gray-200 h-96 md:h-[500px]">
+              <iframe
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                allowFullScreen=""
+                referrerPolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3782.2606050000003!2d73.88590!3d18.52040!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c07cedc1e4fb%3A0x8f8f8f8f8f8f8f8f!2sKoregaon%20Park%20Annexe%2C%20Pune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1715000000000"
+              />
             </div>
           </div>
         </div>

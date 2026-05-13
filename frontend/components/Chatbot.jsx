@@ -57,7 +57,7 @@ export default function Chatbot() {
       // Show rate limit message
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: `⏱️ You've reached the message limit. Please wait ${minutesRemaining} minute${minutesRemaining > 1 ? 's' : ''} before sending more messages. For immediate assistance, contact us at hr@fluid.live`
+        content: `⏱️ You've reached the message limit. Please wait ${minutesRemaining} minute${minutesRemaining > 1 ? 's' : ''} before sending more messages. For immediate assistance, contact us at hrteam@fluid.live`
       }])
       
       // Auto-reset after time window
@@ -107,7 +107,7 @@ Stats:
 - 25+ industries served
 - 98% client retention
 
-Contact: hr@fluid.live
+Contact: hrteam@fluid.live
 
 Your role is to help visitors understand our business, answer questions about our services, and guide them to take action (book a call, explore services, contact us). Be friendly, professional, and concise. Keep responses under 100 words unless detailed explanation is needed.`
 
@@ -190,7 +190,7 @@ Your role is to help visitors understand our business, answer questions about ou
     }
     
     if (lowerMessage.includes('contact') || lowerMessage.includes('call') || lowerMessage.includes('meeting')) {
-      return 'Great! You can reach us at hr@fluid.live or book a call directly through our Contact page. Our team typically responds within 24 hours. Would you like to know anything else about our services before reaching out?'
+      return 'Great! You can reach us at hrteam@fluid.live or book a call directly through our Contact page. Our team typically responds within 24 hours. Would you like to know anything else about our services before reaching out?'
     }
     
     if (lowerMessage.includes('about') || lowerMessage.includes('who are you')) {
@@ -201,7 +201,7 @@ Your role is to help visitors understand our business, answer questions about ou
       return 'Our process follows 5 stages: Discover (understanding your vision), Design (crafting solutions), Build (developing with precision), Deploy (launching with confidence), and Evolve (continuous improvement). We\'re your partner throughout the entire journey!'
     }
     
-    return 'Thanks for your question! I\'m here to help you learn about Fluid.Live\'s AI services and solutions. You can ask me about our services, process, pricing, or how to get in touch. You can also email us at hr@fluid.live or visit our Contact page to book a call!'
+    return 'Thanks for your question! I\'m here to help you learn about Fluid.Live\'s AI services and solutions. You can ask me about our services, process, pricing, or how to get in touch. You can also email us at hrteam@fluid.live or visit our Contact page to book a call!'
   }
 
   const handleKeyPress = (e) => {
