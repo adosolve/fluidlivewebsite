@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -7,13 +7,86 @@ export default function Contact() {
     company: '',
     message: ''
   })
+  const [status, setStatus] = useState({ type: '', message: '' })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const recaptchaRef = useRef(null)
+  const [captchaToken, setCaptchaToken] = useState('')
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    // Define the reCAPTCHA callback globally
+    window.onRecaptchaChange = (token) => {
+      setCaptchaToken(token)
+    }
+    window.onRecaptchaExpired = () => {
+      setCaptchaToken('')
+    }
+    return () => {
+      delete window.onRecaptchaChange
+      delete window.onRecaptchaExpired
+    }
+  }, [])
+
+  useEffect(() => {
+    // Render reCAPTCHA when the component mounts and the script is loaded
+    const renderCaptcha = () => {
+      if (window.grecaptcha && recaptchaRef.current && !recaptchaRef.current.hasChildNodes()) {
+        window.grecaptcha.render(recaptchaRef.current, {
+          sitekey: import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI',
+          callback: 'onRecaptchaChange',
+          'expired-callback': 'onRecaptchaExpired'
+        })
+      }
+    }
+
+    // If grecaptcha is already loaded, render immediately
+    if (window.grecaptcha && window.grecaptcha.render) {
+      renderCaptcha()
+    } else {
+      // Otherwise wait for it to load
+      const interval = setInterval(() => {
+        if (window.grecaptcha && window.grecaptcha.render) {
+          renderCaptcha()
+          clearInterval(interval)
+        }
+      }, 100)
+      return () => clearInterval(interval)
+    }
+  }, [])
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Handle form submission
-    console.log('Form submitted:', formData)
-    alert('Thank you for your message! We\'ll get back to you soon.')
-    setFormData({ name: '', email: '', company: '', message: '' })
+
+    if (!captchaToken) {
+      setStatus({ type: 'error', message: 'Please complete the CAPTCHA verification.' })
+      return
+    }
+
+    setIsSubmitting(true)
+    setStatus({ type: '', message: '' })
+
+    try {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
+      const response = await fetch(`${backendUrl}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, captchaToken })
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setStatus({ type: 'success', message: data.message || 'Message sent successfully!' })
+        setFormData({ name: '', email: '', company: '', message: '' })
+        setCaptchaToken('')
+        if (window.grecaptcha) window.grecaptcha.reset()
+      } else {
+        setStatus({ type: 'error', message: data.error || 'Something went wrong. Please try again.' })
+      }
+    } catch (error) {
+      setStatus({ type: 'error', message: 'Failed to send message. Please try again later.' })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e) => {
@@ -106,12 +179,21 @@ export default function Contact() {
                   />
                 </div>
 
+                <div ref={recaptchaRef} className="mb-2"></div>
+
                 <button
                   type="submit"
-                  className="w-full btn-primary text-lg"
+                  disabled={isSubmitting}
+                  className="w-full btn-primary text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Send Message
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
+
+                {status.message && (
+                  <p className={`text-sm mt-3 ${status.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                    {status.message}
+                  </p>
+                )}
               </form>
             </div>
 

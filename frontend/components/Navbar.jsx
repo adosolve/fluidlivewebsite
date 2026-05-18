@@ -47,7 +47,7 @@ export default function Navbar() {
                 to="/contact" 
                 className="btn-primary"
               >
-                Book a Call
+                Contact Us
               </Link>
             </div>
 
@@ -128,7 +128,7 @@ export default function Navbar() {
               onClick={() => setIsOpen(false)}
               className="btn-primary w-full text-center block py-4 text-base"
             >
-              Book a Call
+              Contact Us
             </Link>
             <p className="text-sm text-gray-500 text-center">
               Where Art meets Intelligence

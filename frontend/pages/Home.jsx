@@ -157,14 +157,8 @@ function HeroSection() {
             href="/#services" 
             className="btn-primary text-sm sm:text-lg px-4 py-3 sm:px-8 sm:py-4"
           >
-            Explore Our Work
+            Explore Our Services
           </a>
-          <Link 
-            to="/contact" 
-            className="btn-secondary text-sm sm:text-lg px-4 py-3 sm:px-8 sm:py-4"
-          >
-            Book a Call
-          </Link>
         </motion.div>
       </div>
     </section>

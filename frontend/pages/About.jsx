@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Counter from '../components/Counter';
 
 export default function About() {
@@ -137,7 +138,7 @@ export default function About() {
               <p className="text-gray-700 font-medium">AI Projects Delivered</p>
             </div>
             <div className="text-center p-8 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl border border-blue-200">
-              <Counter end="12" suffix="+" duration={2000} />
+              <Counter end="25" suffix="+" duration={2000} />
               <p className="text-gray-700 font-medium">Industries Served</p>
             </div>
             <div className="text-center p-8 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl border border-blue-200">
@@ -151,12 +152,12 @@ export default function About() {
             <p className="text-gray-600 mb-6 leading-relaxed">
               Let's explore how we can help transform your business with AI.
             </p>
-            <a 
-              href="/contact" 
+            <Link 
+              to="/contact" 
               className="btn-primary text-lg"
             >
               Get in Touch
-            </a>
+            </Link>
           </div>
         </div>
       </section>
