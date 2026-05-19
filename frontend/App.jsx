@@ -9,6 +9,7 @@ import Contact from './pages/Contact'
 import Careers from './pages/Careers'
 import AdminBlog from './pages/AdminBlog'
 import AdminBlogEditor from './pages/AdminBlogEditor'
+import AdminSubscribers from './pages/AdminSubscribers'
 import BlogPost from './pages/BlogPost'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 
@@ -28,6 +29,7 @@ function App() {
           <Route path="/admin/blog" element={<AdminBlog />} />
           <Route path="/admin/blog/new" element={<AdminBlogEditor />} />
           <Route path="/admin/blog/edit/:id" element={<AdminBlogEditor />} />
+          <Route path="/admin/blog/subscribers" element={<AdminSubscribers />} />
         </Routes>
       </main>
       <Footer />

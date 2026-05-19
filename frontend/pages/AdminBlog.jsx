@@ -147,6 +147,9 @@ export default function AdminBlog() {
               <p className="text-gray-500 mt-2">Create and manage blog posts for the Insights page</p>
             </div>
             <div className="flex gap-3">
+              <button onClick={() => navigate('/admin/blog/subscribers')} className="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition">
+                Subscribers
+              </button>
               <button onClick={() => navigate('/admin/blog/new')} className="btn-primary">
                 + New Post
               </button>
