@@ -283,6 +283,7 @@ export default function Contact() {
                 loading="lazy"
                 allowFullScreen=""
                 referrerPolicy="no-referrer-when-downgrade"
+                title="FluidLive Solutions office location on Google Maps"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3782.2606050000003!2d73.88590!3d18.52040!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c07cedc1e4fb%3A0x8f8f8f8f8f8f8f8f!2sKoregaon%20Park%20Annexe%2C%20Pune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1715000000000"
               />
             </div>

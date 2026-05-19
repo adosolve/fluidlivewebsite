@@ -4,3 +4,4 @@ Disallow: /admin/
 Disallow: /api/
 
 Sitemap: https://fluid.live/sitemap.xml
+Sitemap: https://fluidlivewebsite.onrender.com/api/sitemap

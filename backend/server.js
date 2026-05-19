@@ -8,6 +8,7 @@ import chatbotRoutes from './routes/chatbot.js';
 import blogRoutes from './routes/blog.js';
 import contactRoutes from './routes/contact.js';
 import newsletterRoutes from './routes/newsletter.js';
+import sitemapRoutes from './routes/sitemap.js';
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/sitemap', sitemapRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

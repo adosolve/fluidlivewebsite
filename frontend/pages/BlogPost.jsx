@@ -177,6 +177,13 @@ export default function BlogPost() {
             description={post.excerpt}
             type="article"
             keywords={`${post.category}, AI, FluidLive, ${post.title}`}
+            article={{
+              title: post.title,
+              excerpt: post.excerpt,
+              category: post.category,
+              createdAt: post.createdAt,
+              updatedAt: post.updatedAt
+            }}
           />
           {/* Back link */}
           <Link to="/insights" className="inline-flex items-center text-sm font-medium mb-8 transition-colors duration-300" style={{color: '#4F8CFF'}}>
