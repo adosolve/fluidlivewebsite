@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import SEO from '../components/SEO'
 
 const COOLDOWN_SECONDS = 60
 
@@ -71,6 +72,12 @@ export default function Contact() {
 
   return (
     <div className="pt-4">
+      <SEO
+        title="Contact Us"
+        path="/contact"
+        description="Get in touch with FluidLive Solutions. Ready to transform your business with AI? Contact us for a consultation."
+        keywords="contact FluidLive, AI consultation, get in touch, Pune AI company"
+      />
       <section className="section-spacing bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">

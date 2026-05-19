@@ -1,6 +1,14 @@
+import SEO from '../components/SEO'
+
 export default function Careers() {
   return (
     <div className="pt-4">
+      <SEO
+        title="Careers"
+        path="/careers"
+        description="Join FluidLive Solutions. We're looking for talented individuals passionate about AI, design, and technology to shape the future."
+        keywords="FluidLive careers, AI jobs, tech jobs Pune, join FluidLive"
+      />
       <section className="section-spacing bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="overline">CAREERS</span>

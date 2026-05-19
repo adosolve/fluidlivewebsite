@@ -3,10 +3,16 @@ import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Brain, Settings, Palette, TrendingUp, BarChart3, GraduationCap, Wrench, Zap, Sparkles, Waves } from 'lucide-react'
 import { io } from 'socket.io-client'
+import SEO from '../components/SEO'
 
 export default function Home() {
   return (
     <div className="pt-4">
+      <SEO
+        path="/"
+        description="Fluid.Live delivers cutting-edge AI solutions, digital transformation, and intelligent automation for businesses across 25+ industries. From strategy to deployment."
+        keywords="AI solutions, digital transformation, artificial intelligence, machine learning, AI consulting, Pune, India"
+      />
       <HeroSection />
       <PrincipleSection />
       <ServicesSection />

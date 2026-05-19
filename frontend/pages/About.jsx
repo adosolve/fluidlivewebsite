@@ -1,9 +1,16 @@
 import { Link } from 'react-router-dom';
 import Counter from '../components/Counter';
+import SEO from '../components/SEO';
 
 export default function About() {
   return (
     <div className="pt-4">
+      <SEO
+        title="About Us"
+        path="/about"
+        description="Learn about FluidLive Solutions Pvt Ltd — an AI-first company with 50+ projects delivered across 25+ industries and 98% client retention."
+        keywords="about FluidLive, AI company, team, Pune AI agency, digital transformation company"
+      />
       <section className="section-spacing bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">

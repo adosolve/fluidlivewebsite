@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import SEO from '../components/SEO'
 
 // Custom components that match the FluidLive design system
 const markdownComponents = {
@@ -170,6 +171,13 @@ export default function BlogPost() {
     <div className="pt-4">
       <article className="section-spacing bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SEO
+            title={post.title}
+            path={`/insights/${slug}`}
+            description={post.excerpt}
+            type="article"
+            keywords={`${post.category}, AI, FluidLive, ${post.title}`}
+          />
           {/* Back link */}
           <Link to="/insights" className="inline-flex items-center text-sm font-medium mb-8 transition-colors duration-300" style={{color: '#4F8CFF'}}>
             ← Back to Insights

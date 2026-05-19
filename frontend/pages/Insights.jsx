@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { io } from 'socket.io-client'
+import SEO from '../components/SEO'
 
 export default function Insights() {
   const [insights, setInsights] = useState([])
@@ -60,6 +61,12 @@ export default function Insights() {
 
   return (
     <div className="pt-4">
+      <SEO
+        title="Insights"
+        path="/insights"
+        description="Perspectives on AI strategy, technology, and the future of intelligent business from the Fluid.Live team."
+        keywords="AI insights, AI blog, technology trends, AI strategy, digital transformation articles"
+      />
       <section className="section-spacing bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">

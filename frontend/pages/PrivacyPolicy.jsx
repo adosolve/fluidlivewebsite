@@ -1,6 +1,13 @@
+import SEO from '../components/SEO'
+
 export default function PrivacyPolicy() {
   return (
     <div className="pt-4">
+      <SEO
+        title="Privacy Policy"
+        path="/privacy-policy"
+        description="Privacy Policy for Fluid.Live by FluidLive Solutions Pvt Ltd. Learn how we collect, use, and protect your information."
+      />
       <section className="section-spacing bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
