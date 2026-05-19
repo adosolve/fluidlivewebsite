@@ -81,36 +81,6 @@ export default function Chatbot() {
     }
   }, [isOpen])
 
-  const businessContext = `You are an AI assistant for Fluid.Live, a technocreative company that blends art and intelligence. 
-
-About Fluid.Live:
-- We provide AI-led consulting, products, and creative solutions for businesses
-- Our guiding principle is "Fluid Behaviour and Co-Creation" - we are a trusted partner for the entire business lifecycle
-- We combine extreme engineering, wowsome designs, and blended solutions
-
-Our Services:
-1. AI Strategy & Consulting - We audit current state, identify AI opportunities, and create transformation plans
-2. AI-Powered Products - Design and build bespoke AI agents, chatbots, and automation tools
-3. AI-Enhanced Creative - Brand identity, visual design, and content crafted by humans, accelerated by AI
-4. AI for Marketing & Sales - AI-powered campaigns, lead generation, and sales automation
-5. Custom AI Solutions - End-to-end development of bespoke AI systems
-
-Our Process: Discover → Design → Build → Deploy → Evolve
-
-Our Values:
-- Impact-Driven: We measure success by real-world results
-- Partnership First: Your success is our success
-- Innovation Always: We stay at the forefront of AI advancement
-
-Stats:
-- 150+ AI projects delivered
-- 25+ industries served
-- 98% client retention
-
-Contact: hrteam@fluid.live
-
-Your role is to help visitors understand our business, answer questions about our services, and guide them to take action (book a call, explore services, contact us). Be friendly, professional, and concise. Keep responses under 100 words unless detailed explanation is needed.`
-
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading || isRateLimited) return
 
@@ -131,31 +101,16 @@ Your role is to help visitors understand our business, answer questions about ou
     setIsLoading(true)
 
     try {
-      // Call Sarvam AI API
-      const response = await fetch('https://api.sarvam.ai/v1/chat/completions', {
+      // Call backend chatbot proxy (API key is kept server-side)
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5001'
+      const response = await fetch(`${backendUrl}/api/chatbot/message`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SARVAM_API_KEY || 'YOUR_SARVAM_API_KEY'}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'sarvam-2b-v0.5',
-          messages: [
-            {
-              role: 'system',
-              content: businessContext
-            },
-            ...messages.map(msg => ({
-              role: msg.role,
-              content: msg.content
-            })),
-            {
-              role: 'user',
-              content: userMessage
-            }
-          ],
-          temperature: 0.7,
-          max_tokens: 300
+          message: userMessage,
+          history: messages.map(msg => ({ role: msg.role, content: msg.content }))
         })
       })
 
@@ -164,11 +119,11 @@ Your role is to help visitors understand our business, answer questions about ou
       }
 
       const data = await response.json()
-      const assistantMessage = data.choices[0].message.content
+      const assistantMessage = data.response
 
       setMessages(prev => [...prev, { role: 'assistant', content: assistantMessage }])
     } catch (error) {
-      console.error('Error calling Sarvam AI:', error)
+      console.error('Error calling chatbot:', error)
       
       // Fallback response with business information
       const fallbackResponse = getFallbackResponse(userMessage)

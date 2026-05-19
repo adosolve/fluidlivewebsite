@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import CookieBanner from './components/CookieBanner'
 import Home from './pages/Home'
 import About from './pages/About'
 import Insights from './pages/Insights'
@@ -30,6 +31,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      <CookieBanner />
     </div>
   )
 }
