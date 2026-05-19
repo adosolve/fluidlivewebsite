@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5001;
 
 const httpServer = createServer(app);
 
-const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173').split(',').map(s => s.trim());
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173,https://fluidlivewebsite.vercel.app').split(',').map(s => s.trim());
 
 const io = new Server(httpServer, {
   cors: {
