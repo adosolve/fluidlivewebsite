@@ -1,4 +1,5 @@
 import SEO from '../components/SEO'
+import { Zap, TrendingUp, Users } from 'lucide-react'
 
 export default function Careers() {
   return (
@@ -32,24 +33,36 @@ export default function Careers() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 card">
-              <div className="text-4xl mb-4">🚀</div>
+            <div className="p-8 card text-center">
+              <div className="flex justify-center mb-4">
+                <div className="p-4 bg-blue-100 rounded-xl">
+                  <Zap className="w-8 h-8 text-blue-600" />
+                </div>
+              </div>
               <h3 className="text-xl font-medium mb-3 text-gray-900">Cutting-Edge Work</h3>
               <p className="text-gray-600">
                 Work on AI projects that shape the future. Be part of a team pushing the boundaries of what's possible.
               </p>
             </div>
 
-            <div className="p-8 card">
-              <div className="text-4xl mb-4">🌱</div>
+            <div className="p-8 card text-center">
+              <div className="flex justify-center mb-4">
+                <div className="p-4 bg-green-100 rounded-xl">
+                  <TrendingUp className="w-8 h-8 text-green-600" />
+                </div>
+              </div>
               <h3 className="text-xl font-medium mb-3 text-gray-900">Growth Opportunities</h3>
               <p className="text-gray-600">
                 Continuous learning and development. We invest in our team's growth and career advancement.
               </p>
             </div>
 
-            <div className="p-8 card">
-              <div className="text-4xl mb-4">🤝</div>
+            <div className="p-8 card text-center">
+              <div className="flex justify-center mb-4">
+                <div className="p-4 bg-purple-100 rounded-xl">
+                  <Users className="w-8 h-8 text-purple-600" />
+                </div>
+              </div>
               <h3 className="text-xl font-medium mb-3 text-gray-900">Collaborative Culture</h3>
               <p className="text-gray-600">
                 Work with talented individuals who are passionate about innovation and excellence.
