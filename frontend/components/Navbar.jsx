@@ -11,6 +11,19 @@ export default function Navbar() {
     setIsOpen(false)
   }, [location])
 
+  // Handle hash navigation for smooth scrolling
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash === '#services') {
+      setTimeout(() => {
+        const element = document.getElementById('services')
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 100)
+    }
+  }, [location.pathname])
+
   // Prevent body scroll when menu is open
   useEffect(() => {
     if (isOpen) {
@@ -28,14 +41,23 @@ export default function Navbar() {
       <nav className="fixed w-full z-50 backdrop-blur-lg bg-white/95" aria-label="Main navigation">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <Link to="/" className="flex items-center">
+            <a 
+              href="/" 
+              onClick={(e) => {
+                if (location.pathname === '/') {
+                  e.preventDefault()
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }
+              }}
+              className="flex items-center"
+            >
               <img 
                 src={logo}
                 alt="FLUID.LIVE Logo" 
                 className="h-8 md:h-10 w-auto transition-all duration-300"
                 style={{ height: 'clamp(1.5rem, 6vw, 2.5rem)' }}
               />
-            </Link>
+            </a>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-10">

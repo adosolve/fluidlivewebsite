@@ -149,7 +149,7 @@ export default function Chatbot() {
     }
     
     if (lowerMessage.includes('about') || lowerMessage.includes('who are you')) {
-      return 'Fluid.Live is where Art meets Intelligence. We\'re a technocreative company providing AI-led consulting, products, and creative solutions. We\'ve delivered 150+ AI projects across 25+ industries with 98% client retention. What would you like to know more about?'
+      return 'Fluid.Live is where Art meets Intelligence. We\'re a technocreative company providing AI-led consulting, products, and creative solutions. We\'ve delivered 300+ AI projects across 50+ clients. What would you like to know more about?'
     }
     
     if (lowerMessage.includes('process') || lowerMessage.includes('how do you work')) {

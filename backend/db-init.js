@@ -46,6 +46,25 @@ async function initDatabase() {
     `);
     console.log('✅ contact_submissions table ready');
 
+    // Create jobs table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS jobs (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(500) NOT NULL,
+        description TEXT NOT NULL,
+        location VARCHAR(200) NOT NULL,
+        job_type VARCHAR(50) NOT NULL,
+        experience_level VARCHAR(50) NOT NULL,
+        skills TEXT[],
+        salary_range VARCHAR(100),
+        apply_link VARCHAR(500),
+        published BOOLEAN DEFAULT true,
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
+    console.log('✅ jobs table ready');
+
     // Insert default admin user if none exists
     const { rows } = await pool.query('SELECT id FROM admin_users WHERE email = $1', ['sodhi@fluid.live']);
     if (rows.length === 0) {

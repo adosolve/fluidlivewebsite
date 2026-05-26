@@ -9,7 +9,7 @@ export default function SEO({ title, description, keywords, path, type = 'websit
     ? `${title} | Fluid.Live` 
     : 'Fluid.Live - AI Solutions & Digital Transformation | Where Art Meets Intelligence'
 
-  const defaultDescription = 'Fluid.Live delivers cutting-edge AI solutions, digital transformation, and intelligent automation for businesses across 25+ industries.'
+  const defaultDescription = 'Fluid.Live delivers cutting-edge AI solutions, digital transformation, and intelligent automation for businesses across 50+ industries.'
 
   // Generate JSON-LD for articles
   const articleSchema = article ? {

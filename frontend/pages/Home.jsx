@@ -10,7 +10,7 @@ export default function Home() {
     <div className="pt-4">
       <SEO
         path="/"
-        description="Fluid.Live delivers cutting-edge AI solutions, digital transformation, and intelligent automation for businesses across 25+ industries. From strategy to deployment."
+        description="Fluid.Live delivers cutting-edge AI solutions, digital transformation, and intelligent automation for businesses across 50+ industries. From strategy to deployment."
         keywords="AI solutions, digital transformation, artificial intelligence, machine learning, AI consulting, Pune, India"
       />
       <HeroSection />
@@ -215,13 +215,13 @@ function ServicesSection() {
       id: 'ai-products',
       icon: Settings,
       title: 'AI-Powered Products',
-      description: 'We design and build bespoke AI agents, chatbots, and automation tools — from prototype to production.'
+      description: 'We design and build bespoke AI agents, chatbots, and automation tools. From prototype to production.'
     },
     {
       id: 'ai-creative',
       icon: Palette,
       title: 'AI-Enhanced Creative',
-      description: 'Brand identity, visual design, and content — crafted by humans, accelerated by AI.'
+      description: 'Brand identity, visual design, and content. Crafted by humans, accelerated by AI.'
     },
     {
       id: 'ai-marketing',
@@ -233,7 +233,7 @@ function ServicesSection() {
       id: 'custom-solutions',
       icon: Wrench,
       title: 'Custom AI Solutions',
-      description: 'End-to-end development of bespoke AI systems — from complex integrations to full-stack AI platforms.'
+      description: 'End-to-end development of bespoke AI systems. From complex integrations to full-stack AI platforms.'
     }
   ]
 
@@ -281,7 +281,7 @@ function ServicesSection() {
               to="/contact" 
               className="btn-primary text-base"
             >
-              Start a Project
+              Book a Discovery Call
             </Link>
           </div>
         </div>
@@ -305,7 +305,7 @@ function ProcessSection() {
         <div className="text-center mb-20">
           <span className="overline">HOW WE WORK</span>
           <h2 className="text-5xl md:text-6xl font-medium mt-6" style={{letterSpacing: '-0.02em'}}>
-            From idea to impact — fluid all the way.
+            From idea to impact, fluid all the way.
           </h2>
         </div>
         
@@ -324,7 +324,7 @@ function ProcessSection() {
 }
 
 function StatsSection() {
-  const [counts, setCounts] = useState({ projects: 0, industries: 0, retention: 0, years: 0 })
+  const [counts, setCounts] = useState({ projects: 0, industries: 0, years: 0 })
   const [hasStarted, setHasStarted] = useState(false)
   const sectionRef = useRef(null)
 
@@ -369,9 +369,8 @@ function StatsSection() {
 
     const duration = 2000
     const steps = 60
-    const projectTarget = 150
-    const industriesTarget = 25
-    const retentionTarget = 98
+    const projectTarget = 300
+    const industriesTarget = 50
     const yearsTarget = 10
 
     let currentStep = 0
@@ -382,7 +381,6 @@ function StatsSection() {
       setCounts({
         projects: Math.floor(projectTarget * progress),
         industries: Math.floor(industriesTarget * progress),
-        retention: Math.floor(retentionTarget * progress),
         years: Math.floor(yearsTarget * progress)
       })
 
@@ -400,7 +398,7 @@ function StatsSection() {
         </div>
         
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-16 text-center mb-20">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-16 text-center mb-20">
           <div>
             <div className="text-7xl font-medium gradient-text mb-4">{counts.years}+</div>
             <div className="text-lg text-gray-600" style={{letterSpacing: '0.05em'}}>YEARS</div>
@@ -412,10 +410,6 @@ function StatsSection() {
           <div>
             <div className="text-7xl font-medium gradient-text mb-4">{counts.industries}+</div>
             <div className="text-lg text-gray-600" style={{letterSpacing: '0.05em'}}>CLIENTS SERVED</div>
-          </div>
-          <div>
-            <div className="text-7xl font-medium gradient-text mb-4">{counts.retention}%</div>
-            <div className="text-lg text-gray-600" style={{letterSpacing: '0.05em'}}>CLIENT RETENTION</div>
           </div>
         </div>
 
@@ -535,16 +529,16 @@ function CTASection() {
     <section className="section-spacing bg-gradient-to-br from-blue-600 via-blue-500 to-blue-700">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-5xl md:text-6xl font-medium mb-8 text-white" style={{letterSpacing: '-0.02em'}}>
-          Ready to start the journey?
+          Bring your vision to life.
         </h2>
         <p className="text-xl text-blue-100 mb-12 leading-relaxed">
-          Let's co-create something extraordinary.
+          Connect with our team today to explore how we can support your next initiative.
         </p>
         <Link 
           to="/contact" 
           className="px-8 py-4 text-blue-600 font-medium rounded-full transition-all duration-300 bg-white hover:bg-gray-100 text-lg"
         >
-          Contact Our Team
+          Schedule a Consultation
         </Link>
       </div>
     </section>

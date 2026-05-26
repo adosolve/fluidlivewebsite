@@ -8,6 +8,8 @@ export default function Contact() {
     name: '',
     email: '',
     company: '',
+    countryCode: '+1',
+    phone: '',
     message: ''
   })
   const [status, setStatus] = useState({ type: '', message: '' })
@@ -51,7 +53,7 @@ export default function Contact() {
 
       if (response.ok) {
         setStatus({ type: 'success', message: data.message || 'Message sent successfully!' })
-        setFormData({ name: '', email: '', company: '', message: '' })
+        setFormData({ name: '', email: '', company: '', countryCode: '+1', phone: '', message: '' })
         startCooldown()
       } else {
         setStatus({ type: 'error', message: data.error || 'Something went wrong. Please try again.' })
@@ -128,6 +130,111 @@ export default function Contact() {
                   />
                 </div>
 
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <label htmlFor="countryCode" className="block text-sm font-medium mb-2 text-gray-900">
+                      Country Code *
+                    </label>
+                    <select
+                      id="countryCode"
+                      name="countryCode"
+                      required
+                      value={formData.countryCode}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:border-blue-500"
+                    >
+                      <option value="+1">+1 (US/Canada)</option>
+                      <option value="+44">+44 (UK)</option>
+                      <option value="+91">+91 (India)</option>
+                      <option value="+61">+61 (Australia)</option>
+                      <option value="+81">+81 (Japan)</option>
+                      <option value="+86">+86 (China)</option>
+                      <option value="+33">+33 (France)</option>
+                      <option value="+49">+49 (Germany)</option>
+                      <option value="+39">+39 (Italy)</option>
+                      <option value="+34">+34 (Spain)</option>
+                      <option value="+31">+31 (Netherlands)</option>
+                      <option value="+41">+41 (Switzerland)</option>
+                      <option value="+43">+43 (Austria)</option>
+                      <option value="+45">+45 (Denmark)</option>
+                      <option value="+46">+46 (Sweden)</option>
+                      <option value="+47">+47 (Norway)</option>
+                      <option value="+48">+48 (Poland)</option>
+                      <option value="+55">+55 (Brazil)</option>
+                      <option value="+56">+56 (Chile)</option>
+                      <option value="+57">+57 (Colombia)</option>
+                      <option value="+52">+52 (Mexico)</option>
+                      <option value="+54">+54 (Argentina)</option>
+                      <option value="+27">+27 (South Africa)</option>
+                      <option value="+20">+20 (Egypt)</option>
+                      <option value="+234">+234 (Nigeria)</option>
+                      <option value="+65">+65 (Singapore)</option>
+                      <option value="+60">+60 (Malaysia)</option>
+                      <option value="+66">+66 (Thailand)</option>
+                      <option value="+62">+62 (Indonesia)</option>
+                      <option value="+63">+63 (Philippines)</option>
+                      <option value="+82">+82 (South Korea)</option>
+                      <option value="+84">+84 (Vietnam)</option>
+                      <option value="+64">+64 (New Zealand)</option>
+                      <option value="+353">+353 (Ireland)</option>
+                      <option value="+32">+32 (Belgium)</option>
+                      <option value="+358">+358 (Finland)</option>
+                      <option value="+30">+30 (Greece)</option>
+                      <option value="+36">+36 (Hungary)</option>
+                      <option value="+40">+40 (Romania)</option>
+                      <option value="+421">+421 (Slovakia)</option>
+                      <option value="+385">+385 (Croatia)</option>
+                      <option value="+90">+90 (Turkey)</option>
+                      <option value="+966">+966 (Saudi Arabia)</option>
+                      <option value="+971">+971 (UAE)</option>
+                      <option value="+972">+972 (Israel)</option>
+                      <option value="+92">+92 (Pakistan)</option>
+                      <option value="+880">+880 (Bangladesh)</option>
+                      <option value="+94">+94 (Sri Lanka)</option>
+                      <option value="+886">+886 (Taiwan)</option>
+                      <option value="+852">+852 (Hong Kong)</option>
+                      <option value="+853">+853 (Macau)</option>
+                      <option value="+855">+855 (Cambodia)</option>
+                      <option value="+856">+856 (Laos)</option>
+                      <option value="+95">+95 (Myanmar)</option>
+                      <option value="+880">+880 (Bangladesh)</option>
+                      <option value="+98">+98 (Iran)</option>
+                      <option value="+964">+964 (Iraq)</option>
+                      <option value="+962">+962 (Jordan)</option>
+                      <option value="+961">+961 (Lebanon)</option>
+                      <option value="+212">+212 (Morocco)</option>
+                      <option value="+216">+216 (Tunisia)</option>
+                      <option value="+213">+213 (Algeria)</option>
+                      <option value="+212">+212 (Morocco)</option>
+                      <option value="+1-242">+1-242 (Bahamas)</option>
+                      <option value="+1-246">+1-246 (Barbados)</option>
+                      <option value="+1-441">+1-441 (Bermuda)</option>
+                      <option value="+1-284">+1-284 (British Virgin Islands)</option>
+                      <option value="+1-345">+1-345 (Cayman Islands)</option>
+                      <option value="+1-649">+1-649 (Turks and Caicos)</option>
+                      <option value="+1-869">+1-869 (Saint Kitts and Nevis)</option>
+                      <option value="+1-876">+1-876 (Jamaica)</option>
+                      <option value="+1-939">+1-939 (Puerto Rico)</option>
+                      <option value="+1-787">+1-787 (Puerto Rico)</option>
+                    </select>
+                  </div>
+                  <div className="col-span-2">
+                    <label htmlFor="phone" className="block text-sm font-medium mb-2 text-gray-900">
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      required
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                      placeholder="Your phone number"
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <label htmlFor="company" className="block text-sm font-medium mb-2 text-gray-900">
                     Company
@@ -199,7 +306,7 @@ export default function Contact() {
                     </svg>
                     <div>
                       <p className="font-medium text-gray-900">Location</p>
-                      <p className="text-gray-600">Bungalow #2, Lane O, 81/1, N Main Rd, behind One Restaurant and Bar, Koregaon Park Annexe, Pune, Maharashtra 411036</p>
+                      <p className="text-gray-600">Pune, India</p>
                     </div>
                   </div>
                 </div>
@@ -212,7 +319,7 @@ export default function Contact() {
                     <svg className="w-5 h-5 mr-2 mt-1 flex-shrink-0" style={{color: '#4F8CFF'}} fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    Proven track record across 25+ industries
+                    Proven track record across 50+ Clients
                   </li>
                   <li className="flex items-start">
                     <svg className="w-5 h-5 mr-2 mt-1 flex-shrink-0" style={{color: '#4F8CFF'}} fill="currentColor" viewBox="0 0 20 20">
@@ -266,11 +373,7 @@ export default function Contact() {
           {/* Where We Are Section */}
           <div className="mt-20 pt-20 border-t border-gray-200">
             <div className="text-center mb-12">
-              <span className="overline">WHERE WE ARE</span>
-              <h2 className="text-4xl md:text-5xl font-medium mt-6 mb-4 text-gray-900" style={{letterSpacing: '-0.02em'}}>
-                Pune, India
-              </h2>
-              <p className="text-lg text-gray-600 mb-2">📍 Bungalow #2, Lane O, 81/1, N Main Rd, behind One Restaurant and Bar, Koregaon Park Annexe, Pune, Maharashtra 411036</p>
+              <span className="overline">OUR HEADQUARTER</span>
               <p className="text-lg text-gray-600">Working with clients globally, rooted in Pune.</p>
             </div>
 

@@ -9,7 +9,7 @@ export default function About() {
       <SEO
         title="About Us"
         path="/about"
-        description="Learn about FluidLive Solutions Pvt Ltd — an AI-first company with 150+ projects delivered across 25+ clients and 98% client retention."
+        description="Learn about FluidLive Solutions Pvt Ltd — an AI-first company with 300+ projects delivered across 50+ clients."
         keywords="about FluidLive, AI company, team, Pune AI agency, digital transformation company"
       />
       <section className="section-spacing bg-white">
@@ -146,36 +146,19 @@ export default function About() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 mb-8">
             <div className="text-center p-8">
               <Counter end="10" suffix="+" duration={2000} />
               <p className="text-gray-700 font-medium">Years</p>
             </div>
             <div className="text-center p-8">
-              <Counter end="150" suffix="+" duration={2000} />
+              <Counter end="300" suffix="+" duration={2000} />
               <p className="text-gray-700 font-medium">Projects Delivered</p>
             </div>
             <div className="text-center p-8">
-              <Counter end="25" suffix="+" duration={2000} />
+              <Counter end="50" suffix="+" duration={2000} />
               <p className="text-gray-700 font-medium">Clients Served</p>
             </div>
-            <div className="text-center p-8">
-              <Counter end="98" suffix="%" duration={2000} />
-              <p className="text-gray-700 font-medium">Client Retention</p>
-            </div>
-          </div>
-
-          <div className="text-center p-12 bg-blue-50 rounded-2xl border border-gray-200">
-            <h2 className="text-3xl font-medium mb-4 text-gray-900" style={{letterSpacing: '-0.02em'}}>Ready to work together?</h2>
-            <p className="text-gray-600 mb-6 leading-relaxed">
-              Let's explore how we can help transform your business with AI.
-            </p>
-            <Link 
-              to="/contact" 
-              className="btn-primary text-lg"
-            >
-              Get in Touch
-            </Link>
           </div>
         </div>
       </section>

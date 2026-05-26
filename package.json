@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "doctor": "react-doctor"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
@@ -25,6 +26,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.35",
+    "react-doctor": "^0.2.6",
     "tailwindcss": "^3.4.1",
     "vite": "^5.1.0"
   }
