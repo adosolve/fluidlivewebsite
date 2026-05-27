@@ -3,9 +3,10 @@ import { useParams, useLocation, Link } from 'react-router-dom'
 import {
   MapPin, Briefcase, Clock, DollarSign, ChevronLeft,
   Upload, CheckCircle, AlertCircle, Loader2, X, User,
-  Phone, Mail, Building2, Calendar, Banknote, MapPinned
+  Phone, Mail, Building2, Calendar, Banknote, MapPinned,
+  ChevronDown, ArrowRight, ArrowLeft
 } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import SEO from '../components/SEO'
 import {
   fetchPublishedJobs, findJobBySlug, titleToSlug,
@@ -213,6 +214,7 @@ const NOTICE_OPTIONS = ['Immediate', '15 Days', '1 Month', '2 Months', '3 Months
 const WORK_MODE_OPTIONS = ['On-site', 'Remote', 'Hybrid']
 
 function ApplicationForm({ job, onClose }) {
+  const [step, setStep] = useState(0)
   const [form, setForm] = useState({
     fullName: '', email: '', phone: '',
     gender: '', maritalStatus: '', linkedinUrl: '',
@@ -224,7 +226,7 @@ function ApplicationForm({ job, onClose }) {
   const [cvFile, setCvFile] = useState(null)
   const [cvError, setCvError] = useState('')
   const [errors, setErrors] = useState({})
-  const [status, setStatus] = useState('idle') // idle | submitting | success | error
+  const [status, setStatus] = useState('idle')
   const [serverError, setServerError] = useState('')
 
   const set = (field, val) => {
@@ -242,27 +244,44 @@ function ApplicationForm({ job, onClose }) {
     setCvFile(file)
   }
 
-  const validate = () => {
+  const validateStep = (currentStep) => {
     const e = {}
-    if (!form.fullName.trim()) e.fullName = 'Full name is required'
-    if (!form.email.trim()) e.email = 'Email is required'
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email)) e.email = 'Enter a valid email address'
-    if (!form.phone.trim()) e.phone = 'Phone number is required'
-    else { const d = form.phone.replace(/\D/g,''); if (d.length !== 10) e.phone = 'Phone must be exactly 10 digits'; else if (/^(\d)\1{9}$/.test(d) || d === '1234567890') e.phone = 'Enter a valid phone number' }
-    if (!form.experience) e.experience = 'Experience is required'
-    if (!form.currentlyWorking) e.currentlyWorking = 'Please select employment status'
-    if (form.currentlyWorking === 'yes' && !form.currentCompany.trim()) e.currentCompany = 'Current company is required'
-    if (!form.earliestJoinDate.trim()) e.earliestJoinDate = 'Earliest join date is required'
-    if (!form.expectedCTC.trim()) e.expectedCTC = 'Expected CTC is required'
-    if (!form.currentCity.trim()) e.currentCity = 'City is required'
-    if (!form.workMode) e.workMode = 'Work mode preference is required'
-    if (!cvFile) e.cv = 'Please upload your CV / Resume'
+    if (currentStep === 0) {
+      if (!form.fullName.trim()) e.fullName = 'Full name is required'
+      if (!form.email.trim()) e.email = 'Email is required'
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email)) e.email = 'Enter a valid email address'
+      if (!form.phone.trim()) e.phone = 'Phone number is required'
+      else { const d = form.phone.replace(/\D/g,''); if (d.length !== 10) e.phone = 'Phone must be exactly 10 digits'; else if (/^(\d)\1{9}$/.test(d) || d === '1234567890') e.phone = 'Enter a valid phone number' }
+    } else if (currentStep === 1) {
+      if (!form.experience) e.experience = 'Experience is required'
+      if (!form.currentlyWorking) e.currentlyWorking = 'Please select employment status'
+      if (form.currentlyWorking === 'yes' && !form.currentCompany.trim()) e.currentCompany = 'Current company is required'
+      if (!form.earliestJoinDate.trim()) e.earliestJoinDate = 'Earliest join date is required'
+      if (!form.expectedCTC.trim()) e.expectedCTC = 'Expected CTC is required'
+      if (!form.currentCity.trim()) e.currentCity = 'City is required'
+      if (!form.workMode) e.workMode = 'Work mode preference is required'
+    } else if (currentStep === 2) {
+      if (!cvFile) e.cv = 'Please upload your CV / Resume'
+    }
     return e
+  }
+
+  const handleNext = () => {
+    const errs = validateStep(step)
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs)
+      return
+    }
+    setStep(s => s + 1)
+  }
+
+  const handlePrev = () => {
+    setStep(s => Math.max(0, s - 1))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const errs = validate()
+    const errs = validateStep(step)
     if (Object.keys(errs).length) { setErrors(errs); return }
 
     setStatus('submitting')
@@ -306,181 +325,253 @@ function ApplicationForm({ job, onClose }) {
     )
   }
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15 }
-    }
-  }
+  const steps = [
+    { id: 0, title: 'Personal Info' },
+    { id: 1, title: 'Professional Background' },
+    { id: 2, title: 'Resume Upload' }
+  ]
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+  const slideVariants = {
+    enter: (direction) => ({
+      x: direction > 0 ? 50 : -50,
+      opacity: 0
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      transition: { type: 'spring', stiffness: 300, damping: 30 }
+    },
+    exit: (direction) => ({
+      x: direction < 0 ? 50 : -50,
+      opacity: 0,
+      transition: { duration: 0.2 }
+    })
   }
 
   return (
-    <motion.form 
-      variants={containerVariants} 
-      initial="hidden" 
-      animate="show" 
-      onSubmit={handleSubmit} 
-      noValidate 
-      className="space-y-8"
-    >
-
-      {/* Personal Info */}
-      <motion.div variants={itemVariants}>
-        <FormSection title="Personal Information">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <Field label="Full Name *" error={errors.fullName}>
-            <Input icon={<User className="w-4 h-4" />} placeholder="Your full name" value={form.fullName} onChange={v => set('fullName', v)} />
-          </Field>
-          <Field label="Email Address *" error={errors.email}>
-            <Input icon={<Mail className="w-4 h-4" />} type="email" placeholder="you@example.com" value={form.email} onChange={v => set('email', v)} />
-          </Field>
-          <Field label="Phone Number *" error={errors.phone}>
-            <Input icon={<Phone className="w-4 h-4" />} type="tel" placeholder="10-digit mobile number" value={form.phone} onChange={v => set('phone', v)} maxLength={10} />
-          </Field>
-          <Field label="LinkedIn URL">
-            <Input placeholder="https://linkedin.com/in/yourprofile" value={form.linkedinUrl} onChange={v => set('linkedinUrl', v)} />
-          </Field>
-          <Field label="Gender">
-            <Select value={form.gender} onChange={v => set('gender', v)} options={['Male', 'Female', 'Non-binary', 'Prefer not to say']} placeholder="Select gender" />
-          </Field>
-          <Field label="Marital Status">
-            <Select value={form.maritalStatus} onChange={v => set('maritalStatus', v)} options={['Single', 'Married', 'Divorced', 'Widowed']} placeholder="Select status" />
-          </Field>
+    <div className="w-full">
+      {/* Progress indicators */}
+      <div className="flex items-center justify-between mb-8 relative">
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-100 rounded-full -z-10">
+           <div 
+             className="h-full bg-blue-500 rounded-full transition-all duration-500 ease-out" 
+             style={{ width: `${(step / (steps.length - 1)) * 100}%` }} 
+           />
         </div>
-      </FormSection>
-      </motion.div>
-
-      {/* Professional */}
-      <motion.div variants={itemVariants}>
-      <FormSection title="Professional Background">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <Field label="Total Experience (Years) *" error={errors.experience}>
-            <Input type="number" placeholder="e.g. 3.5" min="0" max="50" step="0.5" value={form.experience} onChange={v => set('experience', v)} />
-          </Field>
-          <Field label="Current Employment Status *" error={errors.currentlyWorking}>
-            <Select value={form.currentlyWorking} onChange={v => set('currentlyWorking', v)} options={[{v:'yes', l:'Currently Employed'},{v:'no', l:'Not Currently Employed'}]} placeholder="Select status" />
-          </Field>
-
-          {form.currentlyWorking === 'yes' && <>
-            <Field label="Current Company *" error={errors.currentCompany}>
-              <Input icon={<Building2 className="w-4 h-4" />} placeholder="Company name" value={form.currentCompany} onChange={v => set('currentCompany', v)} />
-            </Field>
-            <Field label="Notice Period">
-              <Select value={form.noticePeriod} onChange={v => set('noticePeriod', v)} options={NOTICE_OPTIONS} placeholder="Select notice period" />
-            </Field>
-            <Field label="Current CTC (Annual)">
-              <Input icon={<Banknote className="w-4 h-4" />} placeholder="e.g. 6,00,000" value={form.currentCTC} onChange={v => set('currentCTC', v)} />
-            </Field>
-          </>}
-
-          {form.currentlyWorking === 'no' && <>
-            <Field label="Last Company">
-              <Input icon={<Building2 className="w-4 h-4" />} placeholder="Previous company name" value={form.lastCompany} onChange={v => set('lastCompany', v)} />
-            </Field>
-            <Field label="Last CTC (Annual)">
-              <Input icon={<Banknote className="w-4 h-4" />} placeholder="e.g. 5,00,000" value={form.lastCTC} onChange={v => set('lastCTC', v)} />
-            </Field>
-          </>}
-
-          <Field label="Earliest Join Date *" error={errors.earliestJoinDate}>
-            <Input icon={<Calendar className="w-4 h-4" />} type="date" value={form.earliestJoinDate} onChange={v => set('earliestJoinDate', v)} />
-          </Field>
-          <Field label="Expected CTC (Annual) *" error={errors.expectedCTC}>
-            <Input icon={<Banknote className="w-4 h-4" />} placeholder="e.g. 8,00,000" value={form.expectedCTC} onChange={v => set('expectedCTC', v)} />
-          </Field>
-          <Field label="Current City *" error={errors.currentCity}>
-            <Input icon={<MapPinned className="w-4 h-4" />} placeholder="City you are based in" value={form.currentCity} onChange={v => set('currentCity', v)} />
-          </Field>
-          <Field label="Work Mode Preference *" error={errors.workMode}>
-            <Select value={form.workMode} onChange={v => set('workMode', v)} options={WORK_MODE_OPTIONS} placeholder="Select preference" />
-          </Field>
-          <Field label="Job Profile / Role You're Targeting">
-            <Input placeholder="e.g. Frontend Engineer, Product Manager" value={form.jobProfile} onChange={v => set('jobProfile', v)} />
-          </Field>
-        </div>
-      </FormSection>
-      </motion.div>
-
-      {/* CV Upload */}
-      <motion.div variants={itemVariants}>
-      <FormSection title="Resume / CV *">
-        <Field error={errors.cv || cvError}>
-          <div
-            className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-colors duration-200 cursor-pointer
-              ${cvFile ? 'border-green-400 bg-green-50' : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'}`}
-            onClick={() => document.getElementById('cv-upload').click()}
-            onDragOver={e => e.preventDefault()}
-            onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) { const fe = { target: { files: [f] } }; handleFile(fe) } }}
-          >
-            {cvFile ? (
-              <div className="flex items-center justify-center gap-3">
-                <CheckCircle className="w-6 h-6 text-green-600" />
-                <div className="text-left">
-                  <p className="font-medium text-green-800">{cvFile.name}</p>
-                  <p className="text-sm text-green-600">{(cvFile.size / 1024 / 1024).toFixed(2)} MB</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={e => { e.stopPropagation(); setCvFile(null); setCvError('') }}
-                  className="ml-auto p-1 rounded-full hover:bg-green-100 text-green-600"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            ) : (
-              <>
-                <Upload className="w-10 h-10 text-gray-400 mx-auto mb-3" />
-                <p className="text-gray-700 font-medium mb-1">Click to upload or drag & drop</p>
-                <p className="text-sm text-gray-400">PDF, DOC, DOCX · Max 10MB</p>
-              </>
-            )}
-            <input id="cv-upload" type="file" accept=".pdf,.doc,.docx" className="hidden" onChange={handleFile} />
+        {steps.map((s, i) => (
+          <div key={s.id} className="flex flex-col items-center gap-2">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-colors duration-300 ${step >= i ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-gray-400 border-2 border-gray-100'}`}>
+              {step > i ? <CheckCircle className="w-5 h-5" /> : i + 1}
+            </div>
+            <span className={`text-xs font-medium hidden sm:block ${step >= i ? 'text-blue-700' : 'text-gray-400'}`}>
+              {s.title}
+            </span>
           </div>
-        </Field>
-      </FormSection>
-      </motion.div>
+        ))}
+      </div>
+
+      <form onSubmit={e => e.preventDefault()} noValidate className="relative overflow-hidden min-h-[450px]">
+        <AnimatePresence mode="wait" custom={step}>
+          
+          {step === 0 && (
+            <motion.div
+              key="step0"
+              custom={1}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="absolute w-full"
+            >
+              <FormSection title="Personal Information">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <Field label="Full Name *" error={errors.fullName}>
+                    <Input icon={<User className="w-4 h-4" />} placeholder="Your full name" value={form.fullName} onChange={v => set('fullName', v)} />
+                  </Field>
+                  <Field label="Email Address *" error={errors.email}>
+                    <Input icon={<Mail className="w-4 h-4" />} type="email" placeholder="you@example.com" value={form.email} onChange={v => set('email', v)} />
+                  </Field>
+                  <Field label="Phone Number *" error={errors.phone}>
+                    <Input icon={<Phone className="w-4 h-4" />} type="tel" placeholder="10-digit mobile number" value={form.phone} onChange={v => set('phone', v)} maxLength={10} />
+                  </Field>
+                  <Field label="LinkedIn URL">
+                    <Input placeholder="https://linkedin.com/in/yourprofile" value={form.linkedinUrl} onChange={v => set('linkedinUrl', v)} />
+                  </Field>
+                  <Field label="Gender">
+                    <CustomSelect value={form.gender} onChange={v => set('gender', v)} options={['Male', 'Female', 'Non-binary', 'Prefer not to say']} placeholder="Select gender" />
+                  </Field>
+                  <Field label="Marital Status">
+                    <CustomSelect value={form.maritalStatus} onChange={v => set('maritalStatus', v)} options={['Single', 'Married', 'Divorced', 'Widowed']} placeholder="Select status" />
+                  </Field>
+                </div>
+              </FormSection>
+            </motion.div>
+          )}
+
+          {step === 1 && (
+            <motion.div
+              key="step1"
+              custom={1}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="absolute w-full"
+            >
+              <FormSection title="Professional Background">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <Field label="Total Experience (Years) *" error={errors.experience}>
+                    <Input type="number" placeholder="e.g. 3.5" min="0" max="50" step="0.5" value={form.experience} onChange={v => set('experience', v)} />
+                  </Field>
+                  <Field label="Current Employment Status *" error={errors.currentlyWorking}>
+                    <CustomSelect value={form.currentlyWorking} onChange={v => set('currentlyWorking', v)} options={[{v:'yes', l:'Currently Employed'},{v:'no', l:'Not Currently Employed'}]} placeholder="Select status" />
+                  </Field>
+
+                  {form.currentlyWorking === 'yes' && <>
+                    <Field label="Current Company *" error={errors.currentCompany}>
+                      <Input icon={<Building2 className="w-4 h-4" />} placeholder="Company name" value={form.currentCompany} onChange={v => set('currentCompany', v)} />
+                    </Field>
+                    <Field label="Notice Period">
+                      <CustomSelect value={form.noticePeriod} onChange={v => set('noticePeriod', v)} options={NOTICE_OPTIONS} placeholder="Select notice period" />
+                    </Field>
+                    <Field label="Current CTC (Annual)">
+                      <Input icon={<Banknote className="w-4 h-4" />} placeholder="e.g. 6,00,000" value={form.currentCTC} onChange={v => set('currentCTC', v)} />
+                    </Field>
+                  </>}
+
+                  {form.currentlyWorking === 'no' && <>
+                    <Field label="Last Company">
+                      <Input icon={<Building2 className="w-4 h-4" />} placeholder="Previous company name" value={form.lastCompany} onChange={v => set('lastCompany', v)} />
+                    </Field>
+                    <Field label="Last CTC (Annual)">
+                      <Input icon={<Banknote className="w-4 h-4" />} placeholder="e.g. 5,00,000" value={form.lastCTC} onChange={v => set('lastCTC', v)} />
+                    </Field>
+                  </>}
+
+                  <Field label="Earliest Join Date *" error={errors.earliestJoinDate}>
+                    <Input icon={<Calendar className="w-4 h-4" />} type="date" value={form.earliestJoinDate} onChange={v => set('earliestJoinDate', v)} />
+                  </Field>
+                  <Field label="Expected CTC (Annual) *" error={errors.expectedCTC}>
+                    <Input icon={<Banknote className="w-4 h-4" />} placeholder="e.g. 8,00,000" value={form.expectedCTC} onChange={v => set('expectedCTC', v)} />
+                  </Field>
+                  <Field label="Current City *" error={errors.currentCity}>
+                    <Input icon={<MapPinned className="w-4 h-4" />} placeholder="City you are based in" value={form.currentCity} onChange={v => set('currentCity', v)} />
+                  </Field>
+                  <Field label="Work Mode Preference *" error={errors.workMode}>
+                    <CustomSelect value={form.workMode} onChange={v => set('workMode', v)} options={WORK_MODE_OPTIONS} placeholder="Select preference" />
+                  </Field>
+                  <Field label="Job Profile / Role You're Targeting">
+                    <Input placeholder="e.g. Frontend Engineer, Product Manager" value={form.jobProfile} onChange={v => set('jobProfile', v)} />
+                  </Field>
+                </div>
+              </FormSection>
+            </motion.div>
+          )}
+
+          {step === 2 && (
+            <motion.div
+              key="step2"
+              custom={1}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="absolute w-full"
+            >
+              <FormSection title="Resume / CV *">
+                <Field error={errors.cv || cvError}>
+                  <div
+                    className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-colors duration-200 cursor-pointer
+                      ${cvFile ? 'border-green-400 bg-green-50' : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'}`}
+                    onClick={() => document.getElementById('cv-upload').click()}
+                    onDragOver={e => e.preventDefault()}
+                    onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) { const fe = { target: { files: [f] } }; handleFile(fe) } }}
+                  >
+                    {cvFile ? (
+                      <div className="flex items-center justify-center gap-3">
+                        <CheckCircle className="w-6 h-6 text-green-600" />
+                        <div className="text-left">
+                          <p className="font-medium text-green-800">{cvFile.name}</p>
+                          <p className="text-sm text-green-600">{(cvFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={e => { e.stopPropagation(); setCvFile(null); setCvError('') }}
+                          className="ml-auto p-1 rounded-full hover:bg-green-100 text-green-600"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <Upload className="w-10 h-10 text-gray-400 mx-auto mb-3" />
+                        <p className="text-gray-700 font-medium mb-1">Click to upload or drag & drop</p>
+                        <p className="text-sm text-gray-400">PDF, DOC, DOCX · Max 10MB</p>
+                      </>
+                    )}
+                    <input id="cv-upload" type="file" accept=".pdf,.doc,.docx" className="hidden" onChange={handleFile} />
+                  </div>
+                </Field>
+              </FormSection>
+            </motion.div>
+          )}
+
+        </AnimatePresence>
+      </form>
 
       {/* Server error */}
       {status === 'error' && serverError && (
-        <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+        <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm mt-4">
           <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
           <span>{serverError}</span>
         </div>
       )}
 
       {/* Actions */}
-      <div className="flex flex-col sm:flex-row gap-4 pt-4">
-        <button
-          type="submit"
-          disabled={status === 'submitting'}
-          className="btn-primary flex items-center justify-center gap-2 flex-1 text-base disabled:opacity-60 disabled:cursor-not-allowed"
-        >
-          {status === 'submitting' ? (
-            <><Loader2 className="w-5 h-5 animate-spin" />Submitting…</>
-          ) : 'Submit Application →'}
-        </button>
-        <button
-          type="button"
-          onClick={onClose}
-          className="btn-secondary flex-shrink-0 text-base"
-        >
-          Cancel
-        </button>
+      <div className="flex items-center gap-4 pt-6 mt-[450px] sm:mt-[380px] md:mt-[320px] lg:mt-[280px] border-t border-gray-100">
+        {step > 0 && (
+          <button
+            type="button"
+            onClick={handlePrev}
+            className="btn-secondary flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back
+          </button>
+        )}
+        
+        <div className="flex-1"></div>
+        
+        {step < 2 ? (
+          <button
+            type="button"
+            onClick={handleNext}
+            className="btn-primary flex items-center gap-2"
+          >
+            Next Step <ArrowRight className="w-4 h-4" />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={status === 'submitting'}
+            className="btn-primary flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {status === 'submitting' ? (
+              <><Loader2 className="w-5 h-5 animate-spin" /> Submitting…</>
+            ) : (
+              <>Submit Application <CheckCircle className="w-4 h-4" /></>
+            )}
+          </button>
+        )}
       </div>
-
-    </motion.form>
+    </div>
   )
 }
 
 /* ─── Tiny form helper components ────── */
 function FormSection({ title, children }) {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-gray-50 p-6 space-y-5">
+    <div className="rounded-2xl border border-gray-100 bg-gray-50 p-6 space-y-5 shadow-sm">
       <h3 className="text-sm font-semibold text-blue-600 uppercase tracking-wider">{title}</h3>
       {children}
     </div>
@@ -492,7 +583,7 @@ function Field({ label, error, children }) {
     <div className="flex flex-col gap-1.5">
       {label && <label className="text-sm font-medium text-gray-700">{label}</label>}
       {children}
-      {error && <p className="text-xs text-red-600 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{error}</p>}
+      {error && <motion.p initial={{opacity:0, y:-5}} animate={{opacity:1, y:0}} className="text-xs text-red-600 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{error}</motion.p>}
     </div>
   )
 }
@@ -513,18 +604,67 @@ function Input({ icon, type = 'text', placeholder, value, onChange, ...rest }) {
   )
 }
 
-function Select({ value, onChange, options, placeholder }) {
+function CustomSelect({ value, onChange, options, placeholder }) {
+  const [isOpen, setIsOpen] = useState(false)
+  const containerRef = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const selectedLabel = value
+    ? (typeof options[0] === 'string' ? value : options.find(o => o.v === value)?.l)
+    : placeholder
+
   return (
-    <select
-      value={value}
-      onChange={e => onChange(e.target.value)}
-      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-50 transition-all duration-200 appearance-none cursor-pointer"
-    >
-      <option value="">{placeholder}</option>
-      {options.map(o => typeof o === 'string'
-        ? <option key={o} value={o}>{o}</option>
-        : <option key={o.v} value={o.v}>{o.l}</option>
-      )}
-    </select>
+    <div className="relative" ref={containerRef}>
+      <div 
+        className={`flex items-center justify-between px-4 py-3 bg-white border rounded-xl cursor-pointer transition-all duration-200 ${isOpen ? 'border-blue-400 ring-2 ring-blue-50' : 'border-gray-200 hover:border-blue-300'}`}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span className={`text-sm ${value ? 'text-gray-900' : 'text-gray-400'}`}>{selectedLabel}</span>
+        <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+          <ChevronDown className="w-4 h-4 text-gray-400" />
+        </motion.div>
+      </div>
+      
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+            className="absolute z-50 w-full mt-2 bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden"
+          >
+            <div className="max-h-60 overflow-y-auto py-2">
+              {options.map((o, idx) => {
+                const val = typeof o === 'string' ? o : o.v
+                const label = typeof o === 'string' ? o : o.l
+                const isSelected = value === val
+                return (
+                  <div
+                    key={idx}
+                    className={`px-4 py-2.5 text-sm cursor-pointer transition-colors duration-150 ${isSelected ? 'bg-blue-50 text-blue-700 font-medium' : 'text-gray-700 hover:bg-gray-50 hover:text-blue-600'}`}
+                    onClick={() => {
+                      onChange(val)
+                      setIsOpen(false)
+                    }}
+                  >
+                    {label}
+                  </div>
+                )
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   )
 }
