@@ -165,7 +165,7 @@ export default function JobDetail() {
         {!showForm && (
           <div className="border-t border-gray-100 pt-10 mb-4">
             <button onClick={scrollToForm} className="btn-primary w-full text-lg">
-              Apply Now — It Takes 2 Minutes
+              Apply Now
             </button>
           </div>
         )}
@@ -210,7 +210,7 @@ function InfoCell({ icon, label, value }) {
 /* ═══════════════════════════════════════════════════════════════
    APPLICATION FORM
 ═══════════════════════════════════════════════════════════════ */
-const NOTICE_OPTIONS = ['Immediate', '15 Days', '1 Month', '2 Months', '3 Months', '6 Months', 'Other']
+const NOTICE_OPTIONS = ['0 Days', '1 Week', '15 Days', '30 Days', '60 Days', '90 Days', 'Currently Serving Notice Period']
 const WORK_MODE_OPTIONS = ['On-site', 'Remote', 'Hybrid']
 
 function ApplicationForm({ job, onClose }) {
@@ -255,7 +255,10 @@ function ApplicationForm({ job, onClose }) {
     } else if (currentStep === 1) {
       if (!form.experience) e.experience = 'Experience is required'
       if (!form.currentlyWorking) e.currentlyWorking = 'Please select employment status'
-      if (form.currentlyWorking === 'yes' && !form.currentCompany.trim()) e.currentCompany = 'Current company is required'
+      if (form.currentlyWorking === 'yes') {
+        if (!form.currentCompany.trim()) e.currentCompany = 'Current company is required'
+        if (!form.noticePeriod) e.noticePeriod = 'Notice period is required'
+      }
       if (!form.earliestJoinDate.trim()) e.earliestJoinDate = 'Earliest join date is required'
       if (!form.expectedCTC.trim()) e.expectedCTC = 'Expected CTC is required'
       if (!form.currentCity.trim()) e.currentCity = 'City is required'
@@ -362,14 +365,14 @@ function ApplicationForm({ job, onClose }) {
     <div className="w-full">
       {/* Progress indicators */}
       <div className="flex items-center justify-between mb-8 relative px-2">
-        <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1 bg-gray-200 rounded-full -z-10">
+        <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1 bg-gray-200 rounded-full z-0">
            <div 
              className="h-full bg-blue-600 rounded-full transition-all duration-500 ease-out" 
              style={{ width: `${calculateProgress()}%` }} 
            />
         </div>
         {steps.map((s, i) => (
-          <div key={s.id} className="flex flex-col items-center gap-2">
+          <div key={s.id} className="flex flex-col items-center gap-2 relative z-10">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-colors duration-300 ${step > i || calculateProgress() >= ((i) / (steps.length - 1)) * 100 ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-gray-400 border-2 border-gray-200'}`}>
               {step > i ? <CheckCircle className="w-5 h-5" /> : i + 1}
             </div>
@@ -441,29 +444,24 @@ function ApplicationForm({ job, onClose }) {
                     <Field label="Current Company *" error={errors.currentCompany}>
                       <Input icon={<Building2 className="w-4 h-4" />} placeholder="Company name" value={form.currentCompany} onChange={v => set('currentCompany', v)} />
                     </Field>
-                    <Field label="Notice Period">
+                    <Field label="What is your notice period with the current organisation? *" error={errors.noticePeriod}>
                       <CustomSelect value={form.noticePeriod} onChange={v => set('noticePeriod', v)} options={NOTICE_OPTIONS} placeholder="Select notice period" />
                     </Field>
-                    <Field label="Current CTC (Annual)">
-                      <Input icon={<Banknote className="w-4 h-4" />} placeholder="e.g. 6,00,000" value={form.currentCTC} onChange={v => set('currentCTC', v)} />
-                    </Field>
+                    <CTCField label="Current CTC (Annual)" value={form.currentCTC} onChange={v => set('currentCTC', v)} />
                   </>}
 
                   {form.currentlyWorking === 'no' && <>
                     <Field label="Last Company">
                       <Input icon={<Building2 className="w-4 h-4" />} placeholder="Previous company name" value={form.lastCompany} onChange={v => set('lastCompany', v)} />
                     </Field>
-                    <Field label="Last CTC (Annual)">
-                      <Input icon={<Banknote className="w-4 h-4" />} placeholder="e.g. 5,00,000" value={form.lastCTC} onChange={v => set('lastCTC', v)} />
-                    </Field>
+                    <CTCField label="Last CTC (Annual)" value={form.lastCTC} onChange={v => set('lastCTC', v)} />
                   </>}
 
                   <Field label="Earliest Join Date *" error={errors.earliestJoinDate}>
                     <Input icon={<Calendar className="w-4 h-4" />} type="date" value={form.earliestJoinDate} onChange={v => set('earliestJoinDate', v)} />
                   </Field>
-                  <Field label="Expected CTC (Annual) *" error={errors.expectedCTC}>
-                    <Input icon={<Banknote className="w-4 h-4" />} placeholder="e.g. 8,00,000" value={form.expectedCTC} onChange={v => set('expectedCTC', v)} />
-                  </Field>
+                  <CTCField label="Expected CTC (Annual) *" error={errors.expectedCTC} value={form.expectedCTC} onChange={v => set('expectedCTC', v)} />
+
                   <Field label="Current City *" error={errors.currentCity}>
                     <Input icon={<MapPinned className="w-4 h-4" />} placeholder="City you are based in" value={form.currentCity} onChange={v => set('currentCity', v)} />
                   </Field>
@@ -677,4 +675,85 @@ function CustomSelect({ value, onChange, options, placeholder }) {
       </AnimatePresence>
     </div>
   )
+}
+
+function CTCField({ label, error, value, onChange }) {
+  const formatNumber = (val) => {
+    const digits = val.replace(/\D/g, '');
+    if (!digits) return '';
+    let x = digits.toString();
+    let lastThree = x.substring(x.length-3);
+    let otherNumbers = x.substring(0, x.length-3);
+    if(otherNumbers !== '') lastThree = ',' + lastThree;
+    return otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+  }
+
+  const handleChange = (e) => {
+    onChange(formatNumber(e.target.value));
+  }
+
+  const words = numberToWords(value);
+
+  return (
+    <div className="flex flex-col gap-1.5">
+      {label && <label className="text-sm font-medium text-gray-700">{label}</label>}
+      <span className="text-xs text-gray-400 italic -mt-1 mb-1">
+        full value CTC per year in ₹ Rupees e.g. 3,50,000 | Do not write 3.5
+      </span>
+      <div className={`flex items-center gap-2 px-4 py-3 bg-white border ${error ? 'border-red-300' : 'border-gray-200'} rounded-xl focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-50 transition-all duration-200`}>
+        <span className="text-gray-500 font-medium font-sans">₹</span>
+        <input
+          type="text"
+          placeholder="e.g. 8,00,000"
+          value={value}
+          onChange={handleChange}
+          className="flex-1 bg-transparent outline-none text-sm text-gray-900 placeholder-gray-400 min-w-0"
+        />
+      </div>
+      {words && <p className="text-xs text-blue-600 font-medium mt-0.5">{words}</p>}
+      {error && <motion.p initial={{opacity:0, y:-5}} animate={{opacity:1, y:0}} className="text-xs text-red-600 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{error}</motion.p>}
+    </div>
+  )
+}
+
+function numberToWords(num) {
+  if (!num) return '';
+  let n = parseInt(num.toString().replace(/,/g, ''), 10);
+  if (isNaN(n) || n === 0) return '';
+  
+  const single = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+  const double = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+  const tens = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+  
+  const formatTenth = (digit, prev) => {
+    if (digit === 0) return single[prev];
+    if (digit === 1) return double[prev];
+    return tens[digit] + (prev !== 0 ? ' ' + single[prev] : '');
+  };
+
+  let word = '';
+  if (n > 9999999) {
+    let crore = Math.floor(n / 10000000);
+    word += numberToWords(crore).replace(' Rupees Only', '') + ' Crore ';
+    n %= 10000000;
+  }
+  if (n > 99999) {
+    let lakh = Math.floor(n / 100000);
+    word += (lakh < 20 ? (lakh < 10 ? single[lakh] : double[lakh - 10]) : formatTenth(Math.floor(lakh / 10), lakh % 10)) + ' Lakh ';
+    n %= 100000;
+  }
+  if (n > 999) {
+    let thousand = Math.floor(n / 1000);
+    word += (thousand < 20 ? (thousand < 10 ? single[thousand] : double[thousand - 10]) : formatTenth(Math.floor(thousand / 10), thousand % 10)) + ' Thousand ';
+    n %= 1000;
+  }
+  if (n > 99) {
+    let hundred = Math.floor(n / 100);
+    word += single[hundred] + ' Hundred ';
+    n %= 100;
+  }
+  if (n > 0) {
+    word += (n < 20 ? (n < 10 ? single[n] : double[n - 10]) : formatTenth(Math.floor(n / 10), n % 10));
+  }
+  return word.trim() + ' Rupees Only';
 }
