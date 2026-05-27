@@ -5,6 +5,7 @@ import {
   Upload, CheckCircle, AlertCircle, Loader2, X, User,
   Phone, Mail, Building2, Calendar, Banknote, MapPinned
 } from 'lucide-react'
+import { motion } from 'framer-motion'
 import SEO from '../components/SEO'
 import {
   fetchPublishedJobs, findJobBySlug, titleToSlug,
@@ -216,7 +217,7 @@ function ApplicationForm({ job, onClose }) {
     fullName: '', email: '', phone: '',
     gender: '', maritalStatus: '', linkedinUrl: '',
     experience: '', currentlyWorking: '',
-    currentCompany: '', noticePeriod: '',
+    currentCompany: '', noticePeriod: '', earliestJoinDate: '',
     currentCTC: '', lastCompany: '', lastCTC: '',
     expectedCTC: '', currentCity: '', workMode: '', jobProfile: ''
   })
@@ -251,6 +252,7 @@ function ApplicationForm({ job, onClose }) {
     if (!form.experience) e.experience = 'Experience is required'
     if (!form.currentlyWorking) e.currentlyWorking = 'Please select employment status'
     if (form.currentlyWorking === 'yes' && !form.currentCompany.trim()) e.currentCompany = 'Current company is required'
+    if (!form.earliestJoinDate.trim()) e.earliestJoinDate = 'Earliest join date is required'
     if (!form.expectedCTC.trim()) e.expectedCTC = 'Expected CTC is required'
     if (!form.currentCity.trim()) e.currentCity = 'City is required'
     if (!form.workMode) e.workMode = 'Work mode preference is required'
@@ -304,11 +306,32 @@ function ApplicationForm({ job, onClose }) {
     )
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15 }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+  }
+
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-8">
+    <motion.form 
+      variants={containerVariants} 
+      initial="hidden" 
+      animate="show" 
+      onSubmit={handleSubmit} 
+      noValidate 
+      className="space-y-8"
+    >
 
       {/* Personal Info */}
-      <FormSection title="Personal Information">
+      <motion.div variants={itemVariants}>
+        <FormSection title="Personal Information">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <Field label="Full Name *" error={errors.fullName}>
             <Input icon={<User className="w-4 h-4" />} placeholder="Your full name" value={form.fullName} onChange={v => set('fullName', v)} />
@@ -330,8 +353,10 @@ function ApplicationForm({ job, onClose }) {
           </Field>
         </div>
       </FormSection>
+      </motion.div>
 
       {/* Professional */}
+      <motion.div variants={itemVariants}>
       <FormSection title="Professional Background">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <Field label="Total Experience (Years) *" error={errors.experience}>
@@ -362,6 +387,9 @@ function ApplicationForm({ job, onClose }) {
             </Field>
           </>}
 
+          <Field label="Earliest Join Date *" error={errors.earliestJoinDate}>
+            <Input icon={<Calendar className="w-4 h-4" />} type="date" value={form.earliestJoinDate} onChange={v => set('earliestJoinDate', v)} />
+          </Field>
           <Field label="Expected CTC (Annual) *" error={errors.expectedCTC}>
             <Input icon={<Banknote className="w-4 h-4" />} placeholder="e.g. 8,00,000" value={form.expectedCTC} onChange={v => set('expectedCTC', v)} />
           </Field>
@@ -376,8 +404,10 @@ function ApplicationForm({ job, onClose }) {
           </Field>
         </div>
       </FormSection>
+      </motion.div>
 
       {/* CV Upload */}
+      <motion.div variants={itemVariants}>
       <FormSection title="Resume / CV *">
         <Field error={errors.cv || cvError}>
           <div
@@ -413,6 +443,7 @@ function ApplicationForm({ job, onClose }) {
           </div>
         </Field>
       </FormSection>
+      </motion.div>
 
       {/* Server error */}
       {status === 'error' && serverError && (
@@ -442,7 +473,7 @@ function ApplicationForm({ job, onClose }) {
         </button>
       </div>
 
-    </form>
+    </motion.form>
   )
 }
 

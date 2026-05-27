@@ -206,9 +206,8 @@ function JobCard({ job }) {
       state={{ job }}
       className="group block card card-hover p-0 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
     >
-      {/* Cover image strip */}
       {coverImg && (
-        <div className="h-40 w-full overflow-hidden">
+        <div className="aspect-[16/9] w-full overflow-hidden bg-gray-50">
           <img
             src={coverImg}
             alt={job.title}
