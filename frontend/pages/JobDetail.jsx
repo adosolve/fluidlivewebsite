@@ -260,10 +260,20 @@ function ApplicationForm({ job, onClose }) {
       if (!form.expectedCTC.trim()) e.expectedCTC = 'Expected CTC is required'
       if (!form.currentCity.trim()) e.currentCity = 'City is required'
       if (!form.workMode) e.workMode = 'Work mode preference is required'
-    } else if (currentStep === 2) {
+    if (currentStep === 2) {
       if (!cvFile) e.cv = 'Please upload your CV / Resume'
     }
     return e
+  }
+
+  const calculateProgress = () => {
+    let required = ['fullName', 'email', 'phone', 'experience', 'currentlyWorking', 'earliestJoinDate', 'expectedCTC', 'currentCity', 'workMode']
+    if (form.currentlyWorking === 'yes') required.push('currentCompany')
+    
+    let filled = required.filter(f => form[f] && form[f].trim() !== '').length
+    if (cvFile) filled += 1
+    const total = required.length + 1
+    return Math.max(5, (filled / total) * 100) // Minimum 5% so it's visible at start
   }
 
   const handleNext = () => {
@@ -351,16 +361,16 @@ function ApplicationForm({ job, onClose }) {
   return (
     <div className="w-full">
       {/* Progress indicators */}
-      <div className="flex items-center justify-between mb-8 relative">
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-100 rounded-full -z-10">
+      <div className="flex items-center justify-between mb-8 relative px-2">
+        <div className="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1 bg-gray-200 rounded-full -z-10">
            <div 
-             className="h-full bg-blue-500 rounded-full transition-all duration-500 ease-out" 
-             style={{ width: `${(step / (steps.length - 1)) * 100}%` }} 
+             className="h-full bg-blue-600 rounded-full transition-all duration-500 ease-out" 
+             style={{ width: `${calculateProgress()}%` }} 
            />
         </div>
         {steps.map((s, i) => (
           <div key={s.id} className="flex flex-col items-center gap-2">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-colors duration-300 ${step >= i ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-gray-400 border-2 border-gray-100'}`}>
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-colors duration-300 ${step > i || calculateProgress() >= ((i) / (steps.length - 1)) * 100 ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-gray-400 border-2 border-gray-200'}`}>
               {step > i ? <CheckCircle className="w-5 h-5" /> : i + 1}
             </div>
             <span className={`text-xs font-medium hidden sm:block ${step >= i ? 'text-blue-700' : 'text-gray-400'}`}>
@@ -370,7 +380,7 @@ function ApplicationForm({ job, onClose }) {
         ))}
       </div>
 
-      <form onSubmit={e => e.preventDefault()} noValidate className="relative overflow-hidden min-h-[450px]">
+      <form onSubmit={e => e.preventDefault()} noValidate className="relative">
         <AnimatePresence mode="wait" custom={step}>
           
           {step === 0 && (
@@ -381,7 +391,7 @@ function ApplicationForm({ job, onClose }) {
               initial="enter"
               animate="center"
               exit="exit"
-              className="absolute w-full"
+              className="w-full"
             >
               <FormSection title="Personal Information">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -416,7 +426,7 @@ function ApplicationForm({ job, onClose }) {
               initial="enter"
               animate="center"
               exit="exit"
-              className="absolute w-full"
+              className="w-full"
             >
               <FormSection title="Professional Background">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -476,7 +486,7 @@ function ApplicationForm({ job, onClose }) {
               initial="enter"
               animate="center"
               exit="exit"
-              className="absolute w-full"
+              className="w-full"
             >
               <FormSection title="Resume / CV *">
                 <Field error={errors.cv || cvError}>
@@ -528,7 +538,7 @@ function ApplicationForm({ job, onClose }) {
       )}
 
       {/* Actions */}
-      <div className="flex items-center gap-4 pt-6 mt-[450px] sm:mt-[380px] md:mt-[320px] lg:mt-[280px] border-t border-gray-100">
+      <div className="flex items-center gap-4 pt-6 mt-8 border-t border-gray-100">
         {step > 0 && (
           <button
             type="button"

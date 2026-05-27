@@ -31,7 +31,7 @@ export default function Careers() {
       />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section className="section-spacing bg-white">
+      <section className="pt-12 md:pt-20 pb-8 md:pb-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="overline">CAREERS</span>
           <h1 className="text-5xl md:text-6xl font-medium mt-6 mb-8" style={{ letterSpacing: '-0.02em' }}>
@@ -45,7 +45,7 @@ export default function Careers() {
       </section>
 
       {/* ── Open Positions ───────────────────────────────────────── */}
-      <section className="section-spacing bg-gray-50" id="openings">
+      <section className="pt-8 md:pt-12 pb-20 md:pb-32 bg-gray-50" id="openings">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Section header */}
