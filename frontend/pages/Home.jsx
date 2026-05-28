@@ -27,23 +27,15 @@ export default function Home() {
 
 function HeroSection() {
   const videoRef = useRef(null)
-  const [isPlaying, setIsPlaying] = useState(false)
 
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
 
-    // Set video properties to force autoplay
-    video.muted = true
-    video.autoplay = true
-    video.loop = true
-    video.playsInline = true
-
     // Function to attempt playing the video
     const attemptPlay = async () => {
       try {
         await video.play()
-        setIsPlaying(true)
       } catch (error) {
         console.log('Play failed:', error)
       }
@@ -63,18 +55,12 @@ function HeroSection() {
 
     video.addEventListener('loadedmetadata', handleLoadedMetadata)
     video.addEventListener('canplay', handleCanPlay)
-    video.addEventListener('play', () => setIsPlaying(true))
-    video.addEventListener('pause', () => setIsPlaying(false))
 
     // Try again after a short delay
-    const timeoutId = setTimeout(attemptPlay, 100)
-    const timeoutId2 = setTimeout(attemptPlay, 500)
-    const timeoutId3 = setTimeout(attemptPlay, 1000)
+    const timeoutId = setTimeout(attemptPlay, 500)
 
     return () => {
       clearTimeout(timeoutId)
-      clearTimeout(timeoutId2)
-      clearTimeout(timeoutId3)
       video.removeEventListener('loadedmetadata', handleLoadedMetadata)
       video.removeEventListener('canplay', handleCanPlay)
     }
@@ -85,13 +71,16 @@ function HeroSection() {
       {/* Video Background */}
       <video
         ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
         className="absolute inset-0 w-full h-full object-cover"
         style={{ 
           pointerEvents: 'none', 
           WebkitPlaysinline: 'true',
           WebkitUserSelect: 'none',
-          userSelect: 'none',
-          display: 'block'
+          userSelect: 'none'
         }}
       >
         <source src="/hero-section-bg.mp4" type="video/mp4" />
