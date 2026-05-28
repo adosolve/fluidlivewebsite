@@ -30,28 +30,51 @@ function HeroSection() {
 
   useEffect(() => {
     const video = videoRef.current
-    if (video) {
-      // Force video to play on iOS and other browsers
-      video.play().catch(() => {
-        // Autoplay was prevented, try again on user interaction
-        const playOnInteraction = () => {
-          video.play().catch(() => {})
-          document.removeEventListener('touchstart', playOnInteraction)
-          document.removeEventListener('click', playOnInteraction)
-        }
-        document.addEventListener('touchstart', playOnInteraction, { once: true })
-        document.addEventListener('click', playOnInteraction, { once: true })
-      })
+    if (!video) return
+
+    // Function to attempt playing the video
+    const attemptPlay = () => {
+      const playPromise = video.play()
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            // Video is playing
+          })
+          .catch((error) => {
+            // Autoplay was prevented
+            console.log('Autoplay prevented:', error)
+          })
+      }
+    }
+
+    // Try to play immediately
+    attemptPlay()
+
+    // Try again when video is loaded
+    video.addEventListener('loadedmetadata', attemptPlay)
+    video.addEventListener('canplay', attemptPlay)
+
+    // Try again after a short delay to ensure video is ready
+    const timeoutId = setTimeout(attemptPlay, 500)
+
+    // Fallback: play on first user interaction
+    const playOnInteraction = () => {
+      attemptPlay()
+      document.removeEventListener('touchstart', playOnInteraction)
+      document.removeEventListener('click', playOnInteraction)
+    }
+
+    document.addEventListener('touchstart', playOnInteraction, { once: true })
+    document.addEventListener('click', playOnInteraction, { once: true })
+
+    return () => {
+      clearTimeout(timeoutId)
+      video.removeEventListener('loadedmetadata', attemptPlay)
+      video.removeEventListener('canplay', attemptPlay)
+      document.removeEventListener('touchstart', playOnInteraction)
+      document.removeEventListener('click', playOnInteraction)
     }
   }, [])
-
-  const handleVideoLoad = () => {
-    // Ensure video plays when it's loaded
-    const video = videoRef.current
-    if (video) {
-      video.play().catch(() => {})
-    }
-  }
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{backgroundColor: '#1a1a1a'}}>
@@ -62,7 +85,6 @@ function HeroSection() {
         muted
         loop
         playsInline
-        onLoadedMetadata={handleVideoLoad}
         className="absolute inset-0 w-full h-full object-cover"
         style={{ 
           pointerEvents: 'none', 
