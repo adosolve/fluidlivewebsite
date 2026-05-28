@@ -237,7 +237,7 @@ export default function GeneralApplicationForm({ jobs = [], onClose }) {
                       <Input icon={<Phone className="w-4 h-4" />} type="tel" placeholder="Phone number" value={form.phone} onChange={v => set('phone', v)} />
                     </div>
                   </Field>
-                  <Field label="LinkedIn URL">
+                  <Field label="LinkedIn URL" error={errors.linkedinUrl}>
                     <Input placeholder="https://linkedin.com/in/yourprofile" value={form.linkedinUrl} onChange={v => set('linkedinUrl', v)} />
                   </Field>
                   <Field label="Gender">
