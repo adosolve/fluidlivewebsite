@@ -33,7 +33,7 @@ export default function Careers() {
       />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section className="pt-12 md:pt-20 pb-8 md:pb-12 bg-white">
+      <section className="pt-10 md:pt-16 pb-4 md:pb-6 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="overline">CAREERS</span>
           <h1 className="text-5xl md:text-6xl font-medium mt-6 mb-8" style={{ letterSpacing: '-0.02em' }}>
@@ -47,11 +47,11 @@ export default function Careers() {
       </section>
 
       {/* ── Open Positions ───────────────────────────────────────── */}
-      <section className="pt-8 md:pt-12 pb-20 md:pb-32 bg-gray-50" id="openings">
+      <section className="pt-4 md:pt-6 pb-20 md:pb-32 bg-gray-50" id="openings">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Section header */}
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             <span className="overline">OPEN POSITIONS</span>
             <h2 className="text-4xl md:text-5xl font-medium mt-6" style={{ letterSpacing: '-0.02em' }}>
               Current <span className="gradient-text">Openings</span>

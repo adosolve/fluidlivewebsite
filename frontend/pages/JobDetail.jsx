@@ -302,6 +302,9 @@ function ApplicationForm({ job, onClose }) {
       fd.append('jobId', job.id)
       Object.entries(form).forEach(([k, v]) => v && fd.append(k, v))
       if (cvFile) fd.append('cv', cvFile)
+      const urlParams = new URLSearchParams(window.location.search)
+      const ref = urlParams.get('ref')
+      if (ref) fd.append('referredBy', ref)
 
       const result = await submitApplication(fd)
 
@@ -362,7 +365,7 @@ function ApplicationForm({ job, onClose }) {
     <div className="w-full">
       {/* Progress indicators */}
       <div className="flex items-start justify-between mb-8 relative">
-        <div className="absolute left-[16.66%] right-[16.66%] top-5 -translate-y-1/2 h-1 bg-gray-200 rounded-full z-0">
+        <div className="absolute left-[20px] right-[20px] top-5 -translate-y-1/2 h-1 bg-gray-200 rounded-full z-0">
            <div 
              className="h-full bg-blue-600 rounded-full transition-all duration-500 ease-out" 
              style={{ width: `${calculateProgress()}%` }} 
@@ -468,9 +471,6 @@ function ApplicationForm({ job, onClose }) {
                   <Field label="Work Mode Preference *" error={errors.workMode}>
                     <CustomSelect value={form.workMode} onChange={v => set('workMode', v)} options={WORK_MODE_OPTIONS} placeholder="Select preference" />
                   </Field>
-                  <Field label="Job Profile / Role You're Targeting">
-                    <Input placeholder="e.g. Frontend Engineer, Product Manager" value={form.jobProfile} onChange={v => set('jobProfile', v)} />
-                  </Field>
                 </div>
               </FormSection>
             </motion.div>
@@ -536,7 +536,7 @@ function ApplicationForm({ job, onClose }) {
       )}
 
       {/* Actions */}
-      <div className="flex items-center gap-4 pt-6 mt-8 border-t border-gray-100">
+      <div className="flex items-center gap-4 pt-4 mt-4 border-t border-gray-100">
         {step > 0 && (
           <button
             type="button"
@@ -701,7 +701,7 @@ function CTCField({ label, error, value, onChange }) {
         full value CTC per year in ₹ Rupees e.g. 3,50,000 | Do not write 3.5
       </span>
       <div className={`flex items-center gap-2 px-4 py-3 bg-white border ${error ? 'border-red-300' : 'border-gray-200'} rounded-xl focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-50 transition-all duration-200`}>
-        <span className="text-gray-400 flex-shrink-0"><IndianRupee className="w-4 h-4" /></span>
+        <span className="text-gray-500 font-medium text-lg flex-shrink-0 pl-1 pr-0.5">₹</span>
         <input
           type="text"
           placeholder="e.g. 8,00,000"
