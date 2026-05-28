@@ -114,8 +114,8 @@ export default function Footer() {
         </div>
 
         {/* Copyright Section */}
-        <div className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-400 text-xs sm:text-sm">
-          <p>© 2026 FluidLive Solutions Private Limited. All rights reserved.</p>
+        <div className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-800 flex flex-col items-center justify-center gap-4 text-gray-400 text-xs sm:text-sm">
+          <p className="text-center">© 2026 FluidLive Solutions Private Limited. All rights reserved.</p>
           <Link to="/privacy-policy" className="hover:text-white transition-colors duration-300">
             Privacy Policy
           </Link>
