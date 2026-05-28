@@ -27,23 +27,25 @@ export default function Home() {
 
 function HeroSection() {
   const videoRef = useRef(null)
+  const [isPlaying, setIsPlaying] = useState(false)
 
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
 
+    // Set video properties to force autoplay
+    video.muted = true
+    video.autoplay = true
+    video.loop = true
+    video.playsInline = true
+
     // Function to attempt playing the video
-    const attemptPlay = () => {
-      const playPromise = video.play()
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            // Video is playing
-          })
-          .catch((error) => {
-            // Autoplay was prevented
-            console.log('Autoplay prevented:', error)
-          })
+    const attemptPlay = async () => {
+      try {
+        await video.play()
+        setIsPlaying(true)
+      } catch (error) {
+        console.log('Play failed:', error)
       }
     }
 
@@ -51,28 +53,30 @@ function HeroSection() {
     attemptPlay()
 
     // Try again when video is loaded
-    video.addEventListener('loadedmetadata', attemptPlay)
-    video.addEventListener('canplay', attemptPlay)
-
-    // Try again after a short delay to ensure video is ready
-    const timeoutId = setTimeout(attemptPlay, 500)
-
-    // Fallback: play on first user interaction
-    const playOnInteraction = () => {
+    const handleLoadedMetadata = () => {
       attemptPlay()
-      document.removeEventListener('touchstart', playOnInteraction)
-      document.removeEventListener('click', playOnInteraction)
     }
 
-    document.addEventListener('touchstart', playOnInteraction, { once: true })
-    document.addEventListener('click', playOnInteraction, { once: true })
+    const handleCanPlay = () => {
+      attemptPlay()
+    }
+
+    video.addEventListener('loadedmetadata', handleLoadedMetadata)
+    video.addEventListener('canplay', handleCanPlay)
+    video.addEventListener('play', () => setIsPlaying(true))
+    video.addEventListener('pause', () => setIsPlaying(false))
+
+    // Try again after a short delay
+    const timeoutId = setTimeout(attemptPlay, 100)
+    const timeoutId2 = setTimeout(attemptPlay, 500)
+    const timeoutId3 = setTimeout(attemptPlay, 1000)
 
     return () => {
       clearTimeout(timeoutId)
-      video.removeEventListener('loadedmetadata', attemptPlay)
-      video.removeEventListener('canplay', attemptPlay)
-      document.removeEventListener('touchstart', playOnInteraction)
-      document.removeEventListener('click', playOnInteraction)
+      clearTimeout(timeoutId2)
+      clearTimeout(timeoutId3)
+      video.removeEventListener('loadedmetadata', handleLoadedMetadata)
+      video.removeEventListener('canplay', handleCanPlay)
     }
   }, [])
 
@@ -81,16 +85,13 @@ function HeroSection() {
       {/* Video Background */}
       <video
         ref={videoRef}
-        autoPlay
-        muted
-        loop
-        playsInline
         className="absolute inset-0 w-full h-full object-cover"
         style={{ 
           pointerEvents: 'none', 
           WebkitPlaysinline: 'true',
           WebkitUserSelect: 'none',
-          userSelect: 'none'
+          userSelect: 'none',
+          display: 'block'
         }}
       >
         <source src="/hero-section-bg.mp4" type="video/mp4" />
