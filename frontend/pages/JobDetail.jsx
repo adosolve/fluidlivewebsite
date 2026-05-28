@@ -13,6 +13,7 @@ import {
   formatSalary, formatExperience, formatPostedDate,
   submitApplication, FLUIDJOBS_API
 } from '../utils/jobUtils'
+import LocationAutocomplete from '../components/LocationAutocomplete'
 
 /* ═══════════════════════════════════════════════════════════════
    JOB DETAIL PAGE
@@ -243,24 +244,24 @@ function ApplicationForm({ job, onClose }) {
   const validateStep = (currentStep) => {
     const e = {}
     if (currentStep === 0) {
-      if (!form.fullName.trim()) e.fullName = 'Full name is required'
-      if (!form.email.trim()) e.email = 'Email is required'
-      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email)) e.email = 'Enter a valid email address'
-      if (!form.phone.trim()) e.phone = 'Phone number is required'
-      else { const d = form.phone.replace(/\D/g,''); if (d.length < 7 || d.length > 15) e.phone = 'Enter a valid phone number'; else if (/^(\d)\1{6,}$/.test(d) || d === '1234567890') e.phone = 'Enter a valid phone number' }
-      if (form.linkedinUrl && form.linkedinUrl.trim() !== '' && !/^(https?:\/\/)?([\w]+\.)?linkedin\.com\/.*$/i.test(form.linkedinUrl)) {
+      if (!String(form.fullName || '').trim()) e.fullName = 'Full name is required'
+      if (!String(form.email || '').trim()) e.email = 'Email is required'
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(form.email || '').trim())) e.email = 'Enter a valid email address'
+      if (!String(form.phone || '').trim()) e.phone = 'Phone number is required'
+      else { const d = String(form.phone || '').replace(/\D/g,''); if (d.length < 7 || d.length > 15) e.phone = 'Enter a valid phone number'; }
+      if (form.linkedinUrl && String(form.linkedinUrl || '').trim() !== '' && !/^(https?:\/\/)?([\w]+\.)?linkedin\.com\/.*$/i.test(String(form.linkedinUrl || '').trim())) {
         e.linkedinUrl = 'Enter a valid LinkedIn URL'
       }
     } else if (currentStep === 1) {
       if (!form.experience) e.experience = 'Experience is required'
       if (!form.currentlyWorking) e.currentlyWorking = 'Please select employment status'
       if (form.currentlyWorking === 'yes') {
-        if (!form.currentCompany.trim()) e.currentCompany = 'Current company is required'
+        if (!String(form.currentCompany || '').trim()) e.currentCompany = 'Current company is required'
         if (!form.noticePeriod) e.noticePeriod = 'Notice period is required'
       }
-      if (!form.earliestJoinDate.trim()) e.earliestJoinDate = 'Earliest join date is required'
-      if (!form.expectedCTC.trim()) e.expectedCTC = 'Expected CTC is required'
-      if (!form.currentCity.trim()) e.currentCity = 'City is required'
+      if (!String(form.earliestJoinDate || '').trim()) e.earliestJoinDate = 'Earliest join date is required'
+      if (!String(form.expectedCTC || '').trim()) e.expectedCTC = 'Expected CTC is required'
+      if (!String(form.currentCity || '').trim()) e.currentCity = 'City is required'
       if (!form.workMode) e.workMode = 'Work mode preference is required'
     } else if (currentStep === 2) {
       if (!cvFile) e.cv = 'Please upload your CV / Resume'
@@ -470,7 +471,7 @@ function ApplicationForm({ job, onClose }) {
                   <CTCField label="Expected CTC (Annual) *" error={errors.expectedCTC} value={form.expectedCTC} onChange={v => set('expectedCTC', v)} />
 
                   <Field label="Current City *" error={errors.currentCity}>
-                    <Input icon={<MapPinned className="w-4 h-4" />} placeholder="City you are based in" value={form.currentCity} onChange={v => set('currentCity', v)} list="indian-cities" />
+                    <LocationAutocomplete value={form.currentCity} onChange={v => set('currentCity', v)} />
                   </Field>
                   <Field label="Work Mode Preference *" error={errors.workMode}>
                     <CustomSelect value={form.workMode} onChange={v => set('workMode', v)} options={WORK_MODE_OPTIONS} placeholder="Select preference" />
@@ -874,9 +875,9 @@ function CountryCodeSelect({ value, onChange }) {
   const selectedCountry = COUNTRY_CODES.find(c => c.code === value)?.country || 'Select'
 
   return (
-    <div className="relative w-32 flex-shrink-0" ref={containerRef}>
+    <div className="relative w-24 md:w-32 flex-shrink-0" ref={containerRef}>
       <div 
-        className={`flex items-center justify-between px-3 py-3 bg-white border rounded-xl cursor-pointer transition-all duration-200 ${isOpen ? 'border-blue-400 ring-2 ring-blue-50' : 'border-gray-200 hover:border-blue-300'}`}
+        className={`flex items-center justify-between px-2 md:px-3 py-3 bg-white border rounded-xl cursor-pointer transition-all duration-200 ${isOpen ? 'border-blue-400 ring-2 ring-blue-50' : 'border-gray-200 hover:border-blue-300'}`}
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="text-sm font-medium text-gray-900">{value}</span>

@@ -229,12 +229,7 @@ function JobCard({ job }) {
         {/* Top meta row */}
         <div className="flex items-start justify-between gap-4 mb-4">
           <div className="flex-1 min-w-0">
-            {/* Type badge */}
-            {type && (
-              <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-blue-50 text-blue-600 mb-3 border border-blue-100">
-                {type}
-              </span>
-            )}
+            {/* Type badge removed per request */}
             <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-200 leading-tight">
               {job.title}
             </h3>
