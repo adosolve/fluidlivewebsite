@@ -124,7 +124,30 @@ export default function GeneralApplicationForm({ jobs = [], onClose }) {
 
       const urlParams = new URLSearchParams(window.location.search)
       const ref = urlParams.get('ref')
+      let source = urlParams.get('source')
+      
+      if (!source) {
+        const referrer = document.referrer.toLowerCase()
+        if (referrer.includes('linkedin.com')) {
+          source = 'LinkedIn'
+        } else if (referrer.includes('indeed.com')) {
+          source = 'Indeed'
+        } else if (referrer.includes('naukri.com')) {
+          source = 'Naukri.com'
+        } else if (referrer && !referrer.includes(window.location.hostname)) {
+          try {
+            const refUrl = new URL(referrer)
+            source = refUrl.hostname.replace('www.', '')
+          } catch (e) {
+            source = 'Other'
+          }
+        } else {
+          source = 'Direct'
+        }
+      }
+      
       if (ref) fd.append('referredBy', ref)
+      if (source) fd.append('source', source)
 
       const result = await submitApplication(fd)
 
